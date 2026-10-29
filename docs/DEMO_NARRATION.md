@@ -1,6 +1,6 @@
 # Demo narration and publication template
 
-**Not recorded or uploaded.** This is a complete English recording script for a target 2:15 film. The [hosted workspace](https://threadroom.microusada.com/) is deployed and passed origin/public HTTP checks with generation disabled. Live API results, browser verification and a public video URL remain pending. Read this script only over footage of the actual verified workflow: HTTP delivery does not make its generation/comparison claims true. Before recording, complete [the capture gates](DEMO_STORYBOARD.md#capture-checklist); after recording, correct the script and [subtitle template](DEMO_SUBTITLES.srt) to match what actually happened.
+**Not recorded or uploaded.** This is a complete English recording script for a target 2:15 film. The [hosted workspace](https://threadroom.microusada.com/) is deployed and its current r3 build passed public HTTP checks with generation disabled; earlier r2 origin/public checks are historical evidence. Live API results, browser verification and a public video URL remain pending. Read this script only over footage of the actual verified workflow: HTTP delivery does not make its generation/comparison claims true. Before recording, complete [the capture gates](DEMO_STORYBOARD.md#capture-checklist); after recording, correct the script and [subtitle template](DEMO_SUBTITLES.srt) to match what actually happened.
 
 ## Full narration
 

@@ -1,6 +1,6 @@
 # Devpost draft — development version
 
-**Not ready for final submission.** Public source, successful CI and a deployed [hosted workspace](https://threadroom.microusada.com/) are recorded below. Origin/public HTTPS checks each passed 19/19 with live generation disabled. API access, activity units, genuine try-on, browser verification, a video and final submission remain pending. This is English copy for review, with explicit development limits. Update its verbs and links only after collecting actual evidence.
+**Not ready for final submission.** Public source, successful CI and a deployed [hosted workspace](https://threadroom.microusada.com/) are recorded below. Current build `threadroom-12c5c77-r3` passed public HTTPS checks 19/19 at 03:43:28 Asia/Taipei on 30 October 2026 with live generation disabled. Earlier r2 origin/public evidence remains historical in [VERIFICATION.md](VERIFICATION.md). API access, activity units, genuine try-on, browser verification, a video and final submission remain pending. This is English copy for review, with explicit development limits. Update its verbs and links only after collecting actual evidence.
 
 ## Project name
 
@@ -45,7 +45,7 @@ The remaining technical challenges include confirming the correct account host, 
 | --- | --- |
 | Fitting interface, translations and decision controls | Full browser/mobile/accessibility review and final asset checks |
 | YouCam upload/task/poll/result integration code | Account, host, units and a completed real provider task |
-| Deployed workspace, session/budget code and passing origin/public HTTP checks | Real generation plus browser and end-to-end privacy/error verification |
+| Deployed r3 workspace, session/budget code and passing public HTTP checks | Real generation plus browser and end-to-end privacy/error verification |
 | Public code, successful CI and English preparation documents | Final tested release, real demo/video, complete rights review and final submission receipt |
 
 ## What we learned
@@ -64,15 +64,15 @@ A small retailer or shopper could use a controlled comparison to discuss two gar
 
 - Hosted workspace: [https://threadroom.microusada.com/](https://threadroom.microusada.com/) — reachable with generation disabled; working YouCam API access remains pending
 - Source repository: [CarsonCCHsieh/threadroom — public](https://github.com/CarsonCCHsieh/threadroom)
-- Application source: [a7a7a05](https://github.com/CarsonCCHsieh/threadroom/commit/a7a7a051111ee57f87985a3721320c559b75cfcf)
-- CI for that application source: [run 40937515854 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40937515854); syntax, offline asset receipts, fake-provider and no-key HTTP checks passed, not live-generation or browser proof
-- Deployed build: `6a62a16-r2`; a read-only comparison verified all 23 application files as byte-identical to commit `a7a7a05`; origin/public HTTP checks each passed 19/19 with zero provider calls
+- Application source: [12c5c77](https://github.com/CarsonCCHsieh/threadroom/commit/12c5c775f05de44866547db7c36ea5253b7fa65a)
+- CI for that application source: [run 40942475438 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40942475438); syntax, offline asset receipts, 21 fake-provider cases and no-key HTTP smoke passed, not live-generation or browser proof
+- Deployed build: `threadroom-12c5c77-r3`; a read-only comparison verified all 23 application files as byte-identical to commit `12c5c77`; public HTTP checks passed 19/19 at 03:43:28 Asia/Taipei on 30 October 2026 with zero provider calls; earlier r2 evidence is labeled historical in the verification record
 - English judge instructions: [JUDGE_GUIDE.md](JUDGE_GUIDE.md), prepared; browser behavior and genuine provider outcomes pending
 - 1–3 minute public video: pending
 - Final tested commit / release: pending browser/live verification and the actual video; the application-source commit alone is not a verified live release
 
 ## Submission editing notes
 
-Before publication, reconcile every sentence with [VERIFICATION.md](VERIFICATION.md), replace pending links and describe only the features demonstrated by the final build. This draft revision is a later evidence update, not part of application-source commit `a7a7a05`. Ensure the final repository includes the guide and subsequent documentation and records their actual release reference. Keep private account details and test credentials out of public prose; use an appropriate private testing field if one is necessary. Do not select a student or women-in-tech award category without the entrant's confirmed eligibility, or turn the technical learning paragraph into an invented personal survey answer. Public support is [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues); do not post photos, keys or private account/task/session details there.
+Before publication, reconcile every sentence with [VERIFICATION.md](VERIFICATION.md), replace pending links and describe only the features demonstrated by the final build. This draft revision is a later evidence update, not part of application-source commit `12c5c77`. Ensure the final repository includes the guide and subsequent documentation and records their actual release reference. Keep private account details and test credentials out of public prose; use an appropriate private testing field if one is necessary. Do not select a student or women-in-tech award category without the entrant's confirmed eligibility, or turn the technical learning paragraph into an invented personal survey answer. Public support is [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues); do not post photos, keys or private account/task/session details there.
 
 Source requirements: [official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules), [free-unit resources](https://youcam-api-skin-ai-ecommerce.devpost.com/resources), [API terms](https://www.perfectcorp.com/perfectbeauty/youcam/terms-of-service-api). [ASSETS.md](ASSETS.md) and [PRIVACY.md](PRIVACY.md) preserve the distinction between input rights, public-video permission, code licensing and provider retention.

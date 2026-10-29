@@ -1,16 +1,16 @@
 # Judge guide — English
 
-**Preparation version, 30 October 2026.** The public source, CI and [hosted workspace](https://threadroom.microusada.com/) are available. Origin/public HTTPS checks each passed 19/19, with live generation disabled and unconfigured health verified. Browser/device behavior, genuine YouCam generation and the final video remain pending. This guide separates what can be inspected now from the live workflow that still needs proof.
+**Preparation version, 30 October 2026.** The public source, CI and [hosted workspace](https://threadroom.microusada.com/) are available. Current build `threadroom-12c5c77-r3` passed public HTTPS checks 19/19, with live generation disabled and unconfigured health verified. Browser/device behavior, genuine YouCam generation and the final video remain pending. This guide separates what can be inspected now from the live workflow that still needs proof; earlier r2 evidence is labeled historical in [VERIFICATION.md](VERIFICATION.md).
 
 ## Access and evidence
 
 | Item | Current reference |
 | --- | --- |
-| Hosted entry | [https://threadroom.microusada.com/](https://threadroom.microusada.com/) — deployed, live generation disabled; public HTTP checks passed at 03:00:14 Asia/Taipei on 30 October 2026 |
+| Hosted entry | [https://threadroom.microusada.com/](https://threadroom.microusada.com/) — deployed, live generation disabled; current public HTTP checks passed 19/19 at 03:43:28 Asia/Taipei on 30 October 2026 |
 | Source | [CarsonCCHsieh/threadroom](https://github.com/CarsonCCHsieh/threadroom) — public |
-| Application source | [a7a7a05](https://github.com/CarsonCCHsieh/threadroom/commit/a7a7a051111ee57f87985a3721320c559b75cfcf); this guide revision is a later evidence update, not part of the linked commit |
-| CI | [Run 40937515854 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40937515854); syntax, offline asset receipts, fake-provider and no-key HTTP checks passed; no live provider task or browser behavior is demonstrated |
-| Deployed build / final tested release | Build `6a62a16-r2`: a read-only comparison verified all 23 application files as byte-identical to commit `a7a7a05`. The final tested release remains pending browser/device and genuine live-flow verification plus the actual video; see [VERIFICATION.md](VERIFICATION.md). |
+| Application source | [12c5c77](https://github.com/CarsonCCHsieh/threadroom/commit/12c5c775f05de44866547db7c36ea5253b7fa65a); this guide revision is a later evidence update, not part of the linked commit |
+| CI | [Run 40942475438 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40942475438); syntax, offline asset receipts, 21 fake-provider cases and no-key HTTP smoke passed; no live provider task or browser behavior is demonstrated |
+| Deployed build / final tested release | Build `threadroom-12c5c77-r3`: a read-only comparison verified all 23 application files as byte-identical to commit `12c5c77`. The final tested release remains pending browser/device and genuine live-flow verification plus the actual video; see [VERIFICATION.md](VERIFICATION.md). |
 | Public demo video | Pending real recording and upload; [storyboard](DEMO_STORYBOARD.md) and [narration](DEMO_NARRATION.md) are preparation only |
 
 The final entry must provide free, functioning judge access through **21 November 2026, 00:45 Asia/Taipei**. Judges should not have to buy units or supply a personal provider key. The entry is publicly reachable now, but working API access through judging has not been verified. A source review or the currently disconnected hosted workspace cannot satisfy the working YouCam integration requirement by itself. See the [official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules).
