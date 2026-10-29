@@ -15,9 +15,22 @@ final class YouCam
             'Authorization: Bearer ' . $this->config->get('key'),
             'Content-Type: application/json', 'Accept: application/json',
         ], $body);
-        if ($response['status'] === 401 || $response['status'] === 403) throw new ApiError(503, 'provider_auth', 'The provider account could not be verified.');
-        if ($response['status'] === 429) throw new ApiError(503, 'provider_rate_limit', 'The provider is busy. Wait before checking again.');
-        if ($response['status'] < 200 || $response['status'] >= 300) throw new ApiError(503, 'provider_response', 'The provider could not complete this request.');
+        $rejected = false;
+        // Only documented task-create rejection shapes establish non-acceptance.
+        // HTML, unknown errors and 5xx remain ambiguous outcomes.
+        if ($method === 'POST' && $path === '/s2s/v2.0/task/cloth-v3'
+            && in_array($response['status'], [400, 401, 429], true)) {
+            try { $error = json_decode($response['body'], true, 64, JSON_THROW_ON_ERROR); }
+            catch (\JsonException) { $error = null; }
+            if (is_array($error) && ($error['status'] ?? null) === $response['status']) {
+                $rejected = $response['status'] === 400
+                    ? in_array($error['error_code'] ?? null, ['InvalidParameters', 'CreditInsufficiency', 'BadRequest', 'InvalidStyleGroup', 'InvalidStyle'], true)
+                    : is_string($error['error'] ?? null) && $error['error'] !== '';
+            }
+        }
+        if ($response['status'] === 401 || $response['status'] === 403) throw new ApiError(503, 'provider_auth', 'The provider account could not be verified.', $rejected);
+        if ($response['status'] === 429) throw new ApiError(503, 'provider_rate_limit', 'The provider is busy. Wait before checking again.', $rejected);
+        if ($response['status'] < 200 || $response['status'] >= 300) throw new ApiError(503, 'provider_response', 'The provider could not complete this request.', $rejected);
         try { $json = json_decode($response['body'], true, 64, JSON_THROW_ON_ERROR); }
         catch (\JsonException) { throw new ApiError(502, 'provider_response', 'The provider returned an unreadable response.'); }
         if (!is_array($json) || ($json['status'] ?? null) !== 200) throw new ApiError(502, 'provider_response', 'The provider returned an unexpected response.');

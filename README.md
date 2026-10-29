@@ -8,6 +8,8 @@ THREADROOM combines two-look virtual try-on with user-entered price, expected we
 
 Application source is published at [a7a7a05](https://github.com/CarsonCCHsieh/threadroom/commit/a7a7a051111ee57f87985a3721320c559b75cfcf), with [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40937515854) covering offline asset receipts, syntax, fake-provider tests and isolated no-key HTTP smoke. A read-only comparison verified that all 23 application files in deployed build `6a62a16-r2` are byte-identical to that commit. This documentation revision is a later evidence update, not part of the linked application-source commit. Browser/live API verification, the video and the final tested release remain pending. Public reachability does not yet meet the hackathon's working YouCam integration requirement; see [verification evidence](docs/VERIFICATION.md).
 
+Unreleased local changes add bounded recovery of a completed task's result and release generation capacity after a documented task-create rejection. All lifetime unit reservations remain in place. The updated 21-case fake-provider suite and isolated no-key HTTP smoke pass locally; these changes have not been deployed or covered by the linked published CI run.
+
 ## What is in this build
 
 | Area | Current evidence |

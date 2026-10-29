@@ -4,7 +4,8 @@ namespace Threadroom;
 
 final class ApiError extends \RuntimeException
 {
-    public function __construct(public readonly int $http, public readonly string $kind, string $safeMessage)
+    public function __construct(public readonly int $http, public readonly string $kind, string $safeMessage,
+        public readonly bool $definiteProviderRejection = false)
     { parent::__construct($safeMessage); }
 }
 

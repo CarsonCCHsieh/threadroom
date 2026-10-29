@@ -4,6 +4,8 @@ namespace Threadroom;
 
 final class Api
 {
+    private const RESULT_ATTEMPT_LIMIT = 3;
+    private const RESULT_RECOVERY_SECONDS = 300;
     private Store $store;
     private YouCam $provider;
     public function __construct(private readonly Config $config, ?Transport $transport = null)
@@ -138,9 +140,10 @@ final class Api
             $job = $this->update($job['id'], ['status' => 'running', 'providerStatus' => 'running', 'taskId' => $taskId,
                 'nextPollAt' => time() + 10, 'message' => 'YouCam is creating your try-on.']);
         } catch (ApiError $e) {
-            $job = $this->update($job['id'], ['status' => 'error', 'providerStatus' => $taskMayExist ? 'unknown' : 'not_started',
-                'errorCode' => $taskMayExist ? 'task_unconfirmed' : $e->kind,
-                'message' => $taskMayExist ? 'The provider could not confirm this task. It will not be submitted again automatically.' : $e->getMessage()]);
+            $unknown = $taskMayExist && !$e->definiteProviderRejection;
+            $job = $this->update($job['id'], ['status' => 'error', 'providerStatus' => $unknown ? 'unknown' : 'not_started',
+                'errorCode' => $unknown ? 'task_unconfirmed' : $e->kind,
+                'message' => $unknown ? 'The provider could not confirm this task. It will not be submitted again automatically.' : $e->getMessage()]);
         } catch (\Throwable) {
             $job = $this->update($job['id'], ['status' => 'error', 'providerStatus' => $taskMayExist ? 'unknown' : 'not_started',
                 'errorCode' => 'task_unconfirmed', 'message' => 'The task could not be confirmed. It will not be submitted again automatically.']);
@@ -166,10 +169,11 @@ final class Api
         });
     }
 
-    private function update(string $id, array $changes): array
+    private function update(string $id, array $changes, ?string $pollToken = null): array
     {
-        return $this->store->locked(static function(array &$s) use ($id, $changes) {
+        return $this->store->locked(static function(array &$s) use ($id, $changes, $pollToken) {
             if (!isset($s['jobs'][$id])) throw new \RuntimeException('Task state unavailable.');
+            if ($pollToken !== null && ($s['jobs'][$id]['pollToken'] ?? null) !== $pollToken) return $s['jobs'][$id];
             $s['jobs'][$id] = array_replace($s['jobs'][$id], $changes);
             return $s['jobs'][$id];
         });
@@ -177,10 +181,24 @@ final class Api
 
     private function poll(string $id): array
     {
-        $lease = $this->store->locked(static function(array &$s) use ($id) {
+        $pollToken = bin2hex(random_bytes(16));
+        $lease = $this->store->locked(static function(array &$s) use ($id, $pollToken) {
             $job = $s['jobs'][$id];
-            if (!isset($job['taskId']) || in_array($job['providerStatus'], ['success', 'error'], true) || $job['nextPollAt'] > time()) return ['poll' => false, 'job' => $job];
+            $recover = $job['providerStatus'] === 'success' && ($job['resultPending'] ?? false) && !$job['deleted'];
+            if (!isset($job['taskId']) || (in_array($job['providerStatus'], ['success', 'error'], true) && !$recover)
+                || ($job['pollLeaseUntil'] ?? 0) > time()) return ['poll' => false, 'job' => $job];
+            if ($recover && (($job['resultAttempts'] ?? 0) >= self::RESULT_ATTEMPT_LIMIT || ($job['resultRetryUntil'] ?? 0) <= time())) {
+                $s['jobs'][$id] = array_replace($job, ['resultPending' => false, 'status' => 'error', 'errorCode' => 'result_recovery_exhausted',
+                    'message' => 'This completed task could not be downloaded within the recovery limit. No new task was submitted.']);
+                return ['poll' => false, 'job' => $s['jobs'][$id]];
+            }
+            if ($job['nextPollAt'] > time()) return ['poll' => false, 'job' => $job];
             $s['jobs'][$id]['nextPollAt'] = time() + 10;
+            // Two sequential transport calls can each take 35 seconds. This
+            // in-flight lease keeps concurrent workers within the attempt limit.
+            $s['jobs'][$id]['pollToken'] = $pollToken;
+            $s['jobs'][$id]['pollLeaseUntil'] = time() + 80;
+            if ($recover) $s['jobs'][$id]['resultAttempts']++;
             return ['poll' => true, 'job' => $s['jobs'][$id]];
         });
         $job = $lease['job'];
@@ -192,28 +210,37 @@ final class Api
                 $changes = ['status' => 'running', 'message' => 'YouCam is still creating your try-on.'];
                 if ($job['createdAt'] < time() - 300) $changes = ['status' => 'error', 'errorCode' => 'provider_timeout',
                     'message' => 'The provider is taking longer than expected. Check again; this task will not be resubmitted.'];
-                return $this->update($id, $changes);
+                return $this->update($id, $changes, $pollToken);
             }
             $finishedStatus = $data['task_status'];
             if ($data['task_status'] === 'error') {
                 $job = $this->update($id, ['status' => 'error', 'providerStatus' => 'error', 'errorCode' => 'generation_failed',
-                    'message' => 'The provider could not process these photos. Try clear, front-facing images with one person.']);
+                    'resultPending' => false, 'message' => 'The provider could not process these photos. Try clear, front-facing images with one person.'], $pollToken);
             } else {
+                $job = $this->update($id, ['providerStatus' => 'success', 'resultPending' => true,
+                    'resultAttempts' => max(1, $job['resultAttempts'] ?? 0),
+                    'resultRetryUntil' => $job['resultRetryUntil'] ?? time() + self::RESULT_RECOVERY_SECONDS], $pollToken);
+                if (($job['pollToken'] ?? null) !== $pollToken) return $job;
                 $deleted = $this->store->locked(static fn(array &$s) => $s['jobs'][$id]['deleted']);
                 if ($deleted) {
-                    $job = $this->update($id, ['providerStatus' => 'success']);
+                    $job = $this->update($id, ['providerStatus' => 'success', 'resultPending' => false], $pollToken);
                 } else {
                     $url = $data['results']['url'] ?? null;
                     if (!is_string($url)) throw new ApiError(502, 'provider_result', 'The provider result could not be verified.');
                     $image = $this->provider->result($url);
                     $filename = $this->store->writeImage($image);
-                    $job = $this->store->locked(function(array &$s) use ($id, $filename) {
+                    $job = $this->store->locked(function(array &$s) use ($id, $filename, $pollToken) {
+                        if (($s['jobs'][$id]['pollToken'] ?? null) !== $pollToken) {
+                            @unlink($this->store->privateFile($filename));
+                            return $s['jobs'][$id];
+                        }
                         if ($s['jobs'][$id]['deleted']) {
                             @unlink($this->store->privateFile($filename));
                             $s['jobs'][$id]['providerStatus'] = 'success';
+                            $s['jobs'][$id]['resultPending'] = false;
                         } else {
                             $s['jobs'][$id] = array_replace($s['jobs'][$id], ['status' => 'success', 'providerStatus' => 'success',
-                                'resultFile' => $filename, 'message' => 'Your private try-on is ready.']);
+                                'resultPending' => false, 'resultFile' => $filename, 'message' => 'Your private try-on is ready.']);
                         }
                         return $s['jobs'][$id];
                     });
@@ -222,11 +249,31 @@ final class Api
             if ($job['deleted']) $this->deleteFinished($job);
             return $job;
         } catch (ApiError $e) {
+            if ($finishedStatus === 'success' || $job['providerStatus'] === 'success') {
+                return $this->store->locked(static function(array &$s) use ($id, $pollToken, $e) {
+                    $current = &$s['jobs'][$id];
+                    if (($current['pollToken'] ?? null) !== $pollToken) return $current;
+                    $retryable = in_array($e->kind, ['provider_connection', 'provider_dns', 'provider_rate_limit'], true)
+                        || (in_array($e->kind, ['provider_result', 'provider_response'], true) && $e->http === 503);
+                    $retry = $retryable && !$current['deleted'] && ($current['resultAttempts'] ?? 0) < self::RESULT_ATTEMPT_LIMIT
+                        && ($current['resultRetryUntil'] ?? 0) > time();
+                    $current = array_replace($current, ['providerStatus' => 'success', 'resultPending' => $retry,
+                        'status' => $retry ? 'running' : 'error', 'errorCode' => $retryable && !$retry ? 'result_recovery_exhausted' : $e->kind,
+                        'message' => $retry ? 'Your task completed. The result download will be checked again without starting a new task.'
+                            : ($retryable ? 'This completed task could not be downloaded within the recovery limit. No new task was submitted.' : $e->getMessage())]);
+                    if ($retry) $current['nextPollAt'] = time() + 10 * (2 ** max(0, $current['resultAttempts'] - 1));
+                    return $current;
+                });
+            }
             $changes = ['status' => 'error', 'errorCode' => $e->kind, 'message' => $e->getMessage()];
-            // An unsafe/missing/download-failed result is still a completed provider
-            // task. Do not hold a generation slot or re-fetch that result forever.
+            // Without confirmed completion, preserve the original task for
+            // later reconciliation instead of creating another paid task.
             if ($finishedStatus !== null) $changes['providerStatus'] = $finishedStatus;
-            return $this->update($id, $changes);
+            return $this->update($id, $changes, $pollToken);
+        } finally {
+            $this->store->locked(static function(array &$s) use ($id, $pollToken) {
+                if (($s['jobs'][$id]['pollToken'] ?? null) === $pollToken) unset($s['jobs'][$id]['pollToken'], $s['jobs'][$id]['pollLeaseUntil']);
+            });
         }
     }
 
@@ -257,10 +304,11 @@ final class Api
     private function reconcile(): void
     {
         // A returning client must not be necessary to release a known finished task.
-        // Bound network work per request; poll() still acquires the shared 10s lease.
+        // Bound network work per request; poll() enforces scheduling and a shared in-flight lease.
         $jobs = $this->store->locked(static function(array &$s) {
             $due = array_values(array_filter($s['jobs'], static fn(array $j) => isset($j['taskId'])
-                && !in_array($j['providerStatus'], ['success', 'error'], true) && $j['nextPollAt'] <= time()));
+                && (!in_array($j['providerStatus'], ['success', 'error'], true)
+                    || ($j['providerStatus'] === 'success' && ($j['resultPending'] ?? false) && !$j['deleted'])) && $j['nextPollAt'] <= time()));
             usort($due, static fn(array $a, array $b) => $a['nextPollAt'] <=> $b['nextPollAt']);
             return array_slice($due, 0, 2);
         });
@@ -277,7 +325,7 @@ final class Api
             $jobs = [];
             foreach ($s['jobs'] as $id => &$job) if ($job['owner'] === $owner) {
                 if (isset($job['resultFile'])) @unlink($this->store->privateFile($job['resultFile']));
-                unset($job['resultFile']); $job['deleted'] = true; $jobs[] = $job;
+                unset($job['resultFile']); $job['deleted'] = true; $job['resultPending'] = false; $jobs[] = $job;
             }
             unset($job);
             return $jobs;
