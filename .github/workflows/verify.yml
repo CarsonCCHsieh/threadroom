@@ -1,0 +1,29 @@
+name: Verify source
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-mock-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check runtime requirements
+        run: php -r 'foreach (["curl", "fileinfo", "json", "session"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing required PHP extension\n"); exit(1); } }'
+      - name: Check PHP syntax
+        run: find server public/api tests tools -type f -name '*.php' -exec php -l {} \;
+      - name: Check browser module syntax
+        run: |
+          node --check public/app.mjs
+          node --check public/i18n.mjs
+      - name: Run mocked provider tests
+        run: php tests/run.php
+      - name: Run isolated no-key HTTP smoke
+        run: php tests/http-smoke.php

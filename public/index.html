@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="A calmer way to choose what belongs in your wardrobe. Compare real virtual try-ons, your existing clothes, and cost per wear.">
+  <title>THREADROOM — A little more considered.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23242c27'/%3E%3Cpath d='M10 12h20M20 12v19M12 20h16' stroke='%23e7edb4' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#studio" data-i18n="skip">Skip to fitting room</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="THREADROOM home"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 6h20M14 6v20M6 15h16"/></svg>THREADROOM<span class="brand-dot"></span></a>
+    <span class="brand-note" data-i18n="tagline">A little more considered.</span>
+    <nav class="header-tools" aria-label="Application">
+      <button id="about-button" class="text-button" data-i18n="about">The idea</button>
+      <label class="language-label"><span class="sr-only" data-i18n="language">Language</span><select id="language"><option value="en">EN</option><option value="zh-TW">繁中</option><option value="ja">日本語</option></select></label>
+      <button id="privacy-button" class="icon-button privacy-button" data-i18n-title="privacy" title="Privacy" aria-label="Privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.4 3 7.5 7.5 9 4.5-1.5 7.5-4.6 7.5-9V6L12 3Z"/><path d="m8.5 11.7 2.2 2.2 4.8-4.8"/></svg></button>
+    </nav>
+  </header>
+  <main class="workspace" id="studio">
+    <aside class="wardrobe-panel" aria-labelledby="wardrobe-title">
+      <div class="panel-heading"><div><span class="eyebrow" data-i18n="step1">01 / YOUR EDIT</span><h1 id="wardrobe-title" data-i18n="wardrobe">The wardrobe</h1></div><span class="tiny-index">/ 02</span></div>
+      <p class="panel-intro" data-i18n="wardrobeIntro">Something new. Something you already love.</p>
+      <div class="segmented catalog-filters" aria-label="Garment source"><button class="active" data-filter="all" data-i18n="all">All</button><button data-filter="buy" data-i18n="considering">Considering</button><button data-filter="owned" data-i18n="owned">I own</button></div>
+      <div id="catalog" class="catalog"></div>
+      <label class="upload-garment upload-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="addGarment">Add a piece</span><input id="garment-upload" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only"></label>
+      <div class="wardrobe-footnote"><span class="small-dot"></span><span data-i18n="sampleNote">Two original sample garments. No shop affiliation.</span></div>
+    </aside>
+    <section class="studio-panel" aria-labelledby="studio-title">
+      <div class="studio-heading"><div><span class="eyebrow" data-i18n="step2">02 / THE FITTING ROOM</span><h2 id="studio-title" data-i18n="studioTitle">See it on you.</h2></div><span id="connection-status" class="connection-status" role="status"><span class="status-dot"></span><span data-i18n="checking">Checking connection</span></span></div>
+      <div class="stage-toolbar"><div class="segmented view-tabs"><button class="active" data-view="original" data-i18n="original">Original</button><button data-view="compare" data-i18n="compare">A / B compare</button><button data-view="before" data-i18n="beforeAfter">Before / after</button></div><button id="replace-person" class="text-button with-icon"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3m-4 4 4-4 4 4M4 12v5h12v-5"/></svg><span data-i18n="yourPhoto">Your photo</span></button></div>
+      <div id="photo-stage" class="photo-stage" data-view="original">
+        <div class="stage-background-label" aria-hidden="true">THE EVERYDAY EDIT</div>
+        <div id="original-view" class="original-view"><img id="person-image" src="/assets/model-original.png" alt="Original sample model photo" fetchpriority="high"><div class="image-unavailable" hidden><svg viewBox="0 0 80 100" aria-hidden="true"><circle cx="40" cy="22" r="12"/><path d="M18 84V55c0-16 44-16 44 0v29M28 56v35m24-35v35"/></svg><span data-i18n="addPhotoPrompt">Your next favourite starts here.</span><button class="secondary-button" id="empty-upload" data-i18n="choosePhoto">Choose a photo</button></div></div>
+        <div id="compare-view" class="compare-view" hidden><div class="compare-pane"><span class="image-letter">A</span><img id="result-a" alt="Look A virtual try-on result"><div class="result-placeholder" id="placeholder-a"></div></div><div class="compare-pane"><span class="image-letter">B</span><img id="result-b" alt="Look B virtual try-on result"><div class="result-placeholder" id="placeholder-b"></div></div></div>
+        <div id="before-view" class="before-view" hidden><img id="before-original" alt="Original person photo"><div id="after-layer" class="after-layer"><img id="after-result" alt="Selected virtual try-on result"></div><div id="slider-line" class="slider-line"><span>↔</span></div><label class="sr-only" for="before-slider" data-i18n="comparisonPosition">Before and after comparison position</label><input id="before-slider" class="before-slider" type="range" min="0" max="100" value="50"><div class="before-label" data-i18n="original">Original</div><div class="after-label" data-i18n="tryOnResult">AI try-on</div></div>
+        <div class="stage-topline"><span id="image-kind" class="image-kind" data-i18n="sampleInput">SAMPLE / ORIGINAL INPUT</span><button id="delete-photo" class="small-icon" data-i18n-title="deletePhoto" title="Remove my photo" aria-label="Remove my photo" hidden>×</button></div>
+        <div class="stage-bottomline"><span id="stage-caption" data-i18n="originalCaption">Your starting point. No generated result yet.</span><span class="frame-mark" aria-hidden="true">＋</span></div>
+        <input id="person-upload" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+      </div>
+      <div class="studio-footer"><p data-i18n="fitDisclaimer">A visual impression, not a size or fit guarantee.</p><span class="powered">VIRTUAL TRY-ON <span>BY YOUCAM</span></span></div>
+      <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+    </section>
+    <aside class="decision-panel" aria-labelledby="decision-title">
+      <div class="panel-heading"><div><span class="eyebrow" data-i18n="step3">03 / CHOOSE WITH INTENTION</span><h2 id="decision-title" data-i18n="decisionTitle">Worth a place?</h2></div></div>
+      <div class="look-switch" aria-label="Selected look"><button id="select-a" class="active" data-slot="a"><span class="look-letter">A</span><span data-i18n="newPossibility">A new possibility</span></button><button id="select-b" data-slot="b"><span class="look-letter">B</span><span data-i18n="ownAlternative">An owned alternative</span></button></div>
+      <div id="selected-product" class="selected-product"></div>
+      <div class="decision-fields"><div class="field-pair"><label><span data-i18n="price">Price</span><div class="input-affix"><select id="currency" aria-label="Currency"><option>USD</option><option>TWD</option><option>JPY</option><option>EUR</option></select><input id="price" type="number" min="0" max="100000000" step="0.01" inputmode="decimal" value=""></div></label><label><span data-i18n="expectedWears">Expected wears</span><input id="wears" type="number" min="1" max="100000" step="1" inputmode="numeric" value=""></label></div><div class="cost-line"><span data-i18n="costPerWear">Cost per wear</span><strong id="cost-value">—</strong></div><p class="field-note" data-i18n="costNote">Your estimate. No AI guesswork.</p></div>
+      <label class="notes-label" for="notes" data-i18n="notes">A note to yourself</label><textarea id="notes" rows="2" maxlength="800" data-i18n-placeholder="notesPlaceholder" placeholder="Will I reach for it next season?"></textarea>
+      <div class="generate-area"><label class="consent-line"><input id="consent" type="checkbox"><span data-i18n="consent">I have permission to use these photos and agree to send them to YouCam for this try-on.</span></label><button id="generate" class="primary-button"><span data-i18n="generate">Try these two looks</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></button><p id="generation-note" class="generation-note" data-i18n="generationNote">Two selected garments · upper-body try-on</p><div id="job-status" class="job-status" role="status" aria-live="polite" hidden></div></div>
+      <div class="save-actions"><button id="save-json" class="text-button" data-i18n="saveNotes">Save notes</button><button id="save-card" class="text-button" data-i18n="saveCard" disabled>Save comparison</button><button id="clear-session" class="text-button quiet" data-i18n="clear">Clear session</button></div>
+      <div class="private-note"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="8" width="10" height="9" rx="2"/><path d="M7 8V6a3 3 0 0 1 6 0v2"/></svg><span data-i18n="privateNote">No account. No public gallery. Your decision.</span></div>
+    </aside>
+  </main>
+  <dialog id="info-dialog"><button class="dialog-close icon-button" aria-label="Close">×</button><span class="eyebrow">THREADROOM / NOTES</span><h2 id="dialog-title"></h2><div id="dialog-body"></div><button class="secondary-button dialog-done" data-i18n="gotIt">Got it</button></dialog>
+  <noscript><p class="noscript">THREADROOM needs JavaScript to run the fitting studio. No photos are uploaded without your action.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "built_at_utc": "2026-10-29T18:12:15.659505+00:00",
+  "license": "SIL Open Font License 1.1; included adjacent license files",
+  "purpose": "THREADROOM current English and regional locale UI strings; not arbitrary user text",
+  "builder": "tools/rebuild-fonts.py",
+  "fonttools_version": "4.56.0",
+  "ui_sources": {
+    "public/i18n.mjs": "15407a2830c9ae8ee1c9099017e276ba3e063e573146baab60c6d67dd4593531",
+    "public/index.html": "a2d5dbe0a3edd28ed34b3d5fc1e6e42a626c48f1f55478d0b039a373752ba7b7"
+  },
+  "outputs": [
+    {
+      "language": "zh-TW",
+      "file": "NotoSansTC-UI-Variable.woff2",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/notosanstc/NotoSansTC%5Bwght%5D.ttf",
+      "source_sha256": "864727d210d54f2537bbe23b3a839436c3992af72de9322af5270897246bd44f",
+      "output_sha256": "66a3af8ddab92226e26bb47846c1baf78aa1be40be93fb4aaa46b09e2b0d6387",
+      "bytes": 149848,
+      "required_codepoints": 470,
+      "missing_required_codepoints": 0,
+      "weight_range": [
+        400,
+        700
+      ],
+      "required_codepoints_sha256": "65d6831c959ea2de1bd0d23a1a70ea0eaad9327d8f159e686a78e2706f6c77d0"
+    },
+    {
+      "language": "ja",
+      "file": "NotoSansJP-UI-Variable.woff2",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf",
+      "source_sha256": "c2f3b4d463500a2ddcd3849cded1fceeb9fd6d1c32e6cbecd568453ba50fc68f",
+      "output_sha256": "5cfc4bdd40ea3048ab7b0c28356a31394579b11e6ea87a61b7dbcbb5b2983a7e",
+      "bytes": 176140,
+      "required_codepoints": 420,
+      "missing_required_codepoints": 0,
+      "weight_range": [
+        400,
+        700
+      ],
+      "required_codepoints_sha256": "3bb8a753fd04ddf525ba5c216515888e974602d8b93da2f8b3cc929d948dae82"
+    }
+  ]
+}
