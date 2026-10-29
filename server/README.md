@@ -1,6 +1,6 @@
 # THREADROOM private PHP proxy
 
-Local implementation only. No account has been created, credits redeemed, live generation requested, deployment performed, or hackathon entry submitted by this backend work. Provider tests use an explicitly fake in-memory transport.
+Published source baseline: [main 6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19), with [CI success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613). The [hosted workspace](https://threadroom.microusada.com/) is deployed from working-tree build `6a62a16-r2`, based on that baseline plus later asset receipts, with live mode disabled and zero provider calls in the deployment/HTTP checks. Origin/public checks each passed 19/19, including API routing, no-store, unconfigured health and secure session-cookie flags. These checks do not establish browser behavior, account access, redeemed activity units, genuine generation or hackathon submission. Provider tests still use an explicitly fake in-memory transport; final complete commit provenance remains pending. See [VERIFICATION.md](../docs/VERIFICATION.md).
 
 PHP 8.2+ with curl, fileinfo, JSON, sessions and standard image-header functions; no GD, Node, database, Docker or packages. Production document root **must be `threadroom/public`**. Never publish `server`, `config`, `var`, tests, or tools as static files. The built-in `router.php` is for local development; route `/api/*` to `public/api/index.php` in the existing FPM host.
 
@@ -18,10 +18,10 @@ Local startup in PowerShell (no key required):
 
 ```powershell
 $env:THREADROOM_SECURE_COOKIE = 'false'
-php -d upload_max_filesize=10M -d post_max_size=21M -S 127.0.0.1:8787 -t public router.php
+php -d upload_max_filesize=10M -d post_max_size=21M -S 127.0.0.1:31783 -t public router.php
 ```
 
-Set matching upload limits in FPM. A health response without a key honestly reports `configured: false` and `liveAvailable: false`. Missing configuration or uncertain credits never produce a successful pretend result.
+Open `http://127.0.0.1:31783`; choose another unused port if necessary. Set matching upload limits in FPM. A health response without a key honestly reports `configured: false` and `liveAvailable: false`. Missing configuration or uncertain credits never produce a successful pretend result.
 
 ## API contract
 
@@ -51,6 +51,8 @@ Images are JPEG/PNG under 10,000,000 bytes; both dimensions at least 384, longes
 - No token, raw provider response, account identifier, signed storage URL or original photo is logged or returned. Provider task IDs stay in private ledger. Provider retains uploads/results under its own policy (currently documented as up to 30 days); do not claim this service guarantees immediate provider erasure.
 
 After an app restart the ledger remains authoritative. Back it up privately if needed; do not publish it. It contains task IDs, private-session owner IDs, request hashes and local result filenames. Budget changes require deliberate operator review; the configured reserve cannot go below 300.
+
+The [operator cleanup runbook](../docs/PRIVACY.md#operator-cleanup-runbook--manual-not-a-scheduler) covers Clear, pending/unknown tasks and evidence handling. It is a manual procedure, not an installed cron job or a new automatic TTL. Never remove the runtime directory or reset the ledger to make cleanup or budget status look successful.
 
 ## Verification
 

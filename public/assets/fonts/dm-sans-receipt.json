@@ -1,0 +1,45 @@
+{
+  "verified_at_utc": "2026-10-29T18:47:03+00:00",
+  "license": "SIL Open Font License 1.1",
+  "source_repository": "https://github.com/google/fonts",
+  "source_commit": "9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0",
+  "source_directory": "https://github.com/google/fonts/tree/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/dmsans",
+  "verification": "Fetched each immutable official raw file over HTTPS, compared the complete response bytes with the existing local file, and calculated SHA-256. Git blob SHA-1 calculated from the same bytes also matched the official GitHub directory metadata at this commit. The existing font and license were not modified. This establishes current byte identity, not a historical acquisition date.",
+  "files": [
+    {
+      "file": "public/assets/fonts/DMSans-Variable.ttf",
+      "role": "Unmodified variable Latin UI font",
+      "bytes": 240164,
+      "sha256": "8cd08d97e89c24d0aa92edd2f0f4c8ee6195eee9b7c9f154865a58b02f0c1c0d",
+      "source_path": "ofl/dmsans/DMSans[opsz,wght].ttf",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/dmsans/DMSans%5Bopsz%2Cwght%5D.ttf",
+      "source_blob_url": "https://github.com/google/fonts/blob/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/dmsans/DMSans%5Bopsz%2Cwght%5D.ttf",
+      "source_bytes": 240164,
+      "source_sha256": "8cd08d97e89c24d0aa92edd2f0f4c8ee6195eee9b7c9f154865a58b02f0c1c0d",
+      "source_git_blob_sha1": "c672f98060af9b2c85fca704ebd5ad9a8717c1df",
+      "byte_identical": true
+    },
+    {
+      "file": "public/assets/fonts/DMSans-OFL.txt",
+      "role": "Adjacent original font license notice",
+      "bytes": 4482,
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1",
+      "source_path": "ofl/dmsans/OFL.txt",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/dmsans/OFL.txt",
+      "source_blob_url": "https://github.com/google/fonts/blob/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/dmsans/OFL.txt",
+      "source_bytes": 4482,
+      "source_sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1",
+      "source_git_blob_sha1": "4430b85ac62998e2edb914360f9ebdfe43f4deaa",
+      "byte_identical": true
+    }
+  ],
+  "observed_font_metadata": {
+    "family": "DM Sans 9pt",
+    "version": "Version 4.004;gftools[0.9.30]",
+    "designer": "Colophon Foundry, Jonny Pinhorn",
+    "axes": [
+      { "tag": "opsz", "min": 9, "default": 9, "max": 40 },
+      { "tag": "wght", "min": 100, "default": 400, "max": 1000 }
+    ]
+  }
+}

@@ -6,16 +6,22 @@
   "assets": [
     {
       "file": "model-original.png",
+      "sha256": "befee3a3e686e7fd62328847e967a66e002093dd92fd07aba154f9ee5dd88c82",
+      "bytes": 1822868,
       "use_case": "photorealistic-natural",
       "prompt": "Use case: photorealistic-natural. Asset type: original fictional sample person photo for THREADROOM, a virtual clothing comparison app. Create one photorealistic full-length front-facing studio photograph of a fictional adult East Asian woman around 28, with shoulder-length dark hair, calm natural expression, wearing a plain opaque light gray crewneck short-sleeve T-shirt, straight charcoal trousers and simple off-white sneakers. Entire body including head and feet visible with generous small margins, arms relaxed slightly away from torso so clothing is unobstructed, straight balanced standing pose, looking toward camera. Warm off-white seamless studio backdrop and floor, soft natural side light, gentle real shadows, 50mm editorial fashion photography, realistic skin and cotton fabric texture. Portrait composition. One person only. Fully clothed. No logos, text, jewelry, props, watermark, before/after panels or garment overlays. This is an ORIGINAL INPUT photo, not a virtual try-on output."
     },
     {
       "file": "linen-shirt.png",
+      "sha256": "f5dd7e94c1f4cb9c939e8e2a8660eb6dffc625d3c2b203859774b27ab6b7abce",
+      "bytes": 1998127,
       "use_case": "product-mockup",
       "prompt": "Use case: product-mockup. Asset type: original clothing input catalog photo for a virtual try-on comparison app. Create one photorealistic premium e-commerce studio product photograph of a single ivory linen long-sleeved button-up shirt, clean front view, collar open, all buttons below collar closed, sleeves naturally extended slightly apart from body, entire shirt visible with small generous margins. Shirt should be presented alone as a clean ghost-mannequin silhouette, with NO person, NO visible mannequin, NO hanger, NO hands. Warm off-white seamless background with a subtle natural shadow, diffuse editorial light, clearly visible realistic linen weave, seams and gentle creases, quiet considered apparel design. Portrait composition, one garment only. No logos, text, labels visible, watermark, frame or montage. This is an original garment INPUT image, not a photo of anyone wearing it."
     },
     {
       "file": "navy-overshirt.png",
+      "sha256": "8d37d53e3c6c530dab5484686224cf119ed627e7564f6806d11e0b644e405d9b",
+      "bytes": 2169951,
       "use_case": "product-mockup",
       "prompt": "Use case: product-mockup. Asset type: original clothing input catalog photo for a virtual try-on comparison app. Create one photorealistic premium e-commerce studio product photograph of a single navy blue structured cotton twill overshirt, clean front view, simple shirt collar, all front buttons closed, two subtle chest patch pockets, long sleeves naturally extended slightly apart from body, entire garment visible with small generous margins. Present the shirt alone as a clean ghost-mannequin silhouette with NO person, NO visible mannequin, NO hanger and NO hands. Warm off-white seamless background, subtle natural shadow, diffuse editorial studio light, rich realistic cotton twill texture, precise seams and gentle natural creases. Portrait composition. One garment only. No logos, text, labels visible, watermark, frame, montage. This is an original garment INPUT image, not a virtual try-on output."
     }

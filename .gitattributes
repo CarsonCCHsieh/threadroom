@@ -4,3 +4,9 @@
 *.jpeg binary
 *.ttf binary
 *.woff2 binary
+# Preserve the upstream license bytes, including CRLF and existing spaces.
+public/assets/fonts/DMSans-OFL.txt -text -whitespace
+# Keep the audited deployment bytes and source-bound font receipt consistent.
+public/i18n.mjs -text whitespace=cr-at-eol
+public/styles.css -text whitespace=cr-at-eol
+public/assets/fonts/font-receipt.json -text whitespace=cr-at-eol

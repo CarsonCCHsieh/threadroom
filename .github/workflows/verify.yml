@@ -23,6 +23,8 @@ jobs:
         run: |
           node --check public/app.mjs
           node --check public/i18n.mjs
+      - name: Verify local asset receipts
+        run: python3 tools/check-assets.py
       - name: Run mocked provider tests
         run: php tests/run.php
       - name: Run isolated no-key HTTP smoke

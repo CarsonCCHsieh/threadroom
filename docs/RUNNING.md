@@ -1,6 +1,6 @@
 # Run, test and deploy
 
-Current status: local implementation only. Provider credentials, credits, true generation, production configuration and public availability remain unverified. Commands below are instructions, not evidence that they have been run.
+Current status: [public source](https://github.com/CarsonCCHsieh/threadroom), initial [main 6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19), [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613), and the [hosted workspace](https://threadroom.microusada.com/) are recorded. Working-tree build `6a62a16-r2` is deployed with live generation disabled; origin/public HTTPS checks each passed 19/19. Its 23 application files are based on the initial baseline plus later asset receipts; a complete final commit remains to be recorded. Provider credentials, activity units, genuine generation and browser/device behavior remain unverified. Commands below are instructions unless an actual outcome is separately recorded in [VERIFICATION.md](VERIFICATION.md). Judges should start with the [English judge guide](JUDGE_GUIDE.md); this page is for operators and developers.
 
 ## Requirements and local start
 
@@ -53,7 +53,7 @@ php tests/http-smoke.php
 
 The backend suite uses an explicitly fake provider transport. It exercises configuration honesty, consent/CSRF, input validation, metadata removal, ownership, host policy, budget/cost failures, duplicate prevention, timeout recovery, cleanup and ledger locking. A passing suite does not establish credentials, credits, real output quality, production routing, browser behavior or deployment.
 
-The HTTP smoke test starts an isolated local server/runtime, uses a fake provider and checks the same-origin API paths over HTTP. It does not spend provider units. Frontend syntax checks can be run with `node --check public/app.mjs` and `node --check public/i18n.mjs`; Node is a development check, not a hosting dependency. Current reported results are recorded in [VERIFICATION.md](VERIFICATION.md).
+The HTTP smoke test starts an isolated local server/runtime with an empty key and live mode disabled, then checks the same-origin API paths over HTTP. It does not contact YouCam or spend provider units. Frontend syntax checks can be run with `node --check public/app.mjs` and `node --check public/i18n.mjs`; Node is a development check, not a hosting dependency. Current reported results are recorded in [VERIFICATION.md](VERIFICATION.md).
 
 Before a release, also inspect in a real browser:
 
@@ -67,9 +67,11 @@ Before a release, also inspect in a real browser:
 
 Record outcomes in [VERIFICATION.md](VERIFICATION.md). A checklist describes required work, not a passing test.
 
-## Deployment plan — not performed
+## Deployment status and release procedure
 
-Use a new, isolated site on existing resources; keep the demo hub and other applications intact. A suitable deployment is static frontend files plus a small same-origin PHP-FPM proxy. Do not add a Node daemon, database, paid host or container merely for this app. Build assets locally.
+The isolated [public entry](https://threadroom.microusada.com/) is deployed on existing resources, using static frontend files plus a same-origin PHP-FPM proxy. DNS and public HTTPS reachability are verified. Origin checks at 02:59:02 and public checks at 03:00:14 Asia/Taipei on 30 October 2026 each passed 19/19: selected asset integrity/MIME, CSP/nosniff, private-path 404s, fixed API routing, no-store and the unconfigured secure-cookie state. These were HTTP checks with zero provider calls; browser execution, real generation and ongoing judge access are still unverified.
+
+Use the following procedure for a future release or provider activation. The initial deployed state does not make every step below complete. Keep other applications intact; do not add a Node daemon, database, paid host or container merely for this app. Build assets locally.
 
 1. Recheck actual server capacity and PHP extensions; historical capacity observations are not a current guarantee.
 2. Configure a separate hostname, document root, vhost and minimal FPM pool. Serve only `public/`; route `/api/*` to `public/api/index.php`. Do not reuse unrelated site credentials or settings.
@@ -79,4 +81,4 @@ Use a new, isolated site on existing resources; keep the demo hub and other appl
 6. Enable live generation only after preflight and budget review. Verify a real task, polling, same-session result, foreign-session denial, Clear, error handling and unit reserve on the deployed release.
 7. Save a redacted release receipt with commit/build hashes, URL, time and check outcomes. Keep a rollback release. Never erase the budget ledger as a rollback shortcut.
 
-No production hostname, URL or deployment success is asserted by this guide. Set a real operator contact and retention schedule before public personal-photo use. See [PRIVACY.md](PRIVACY.md).
+The public deployment is confirmed only to the HTTP-check scope above. It is currently unconfigured for YouCam generation and does not yet meet the working API requirement. [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues) is the public project support channel, with no photos, keys, identifiers or private logs in issues. It is not a private intake channel. Before accepting public personal photos, establish a suitable private request channel and record an actual cleanup owner, cadence and completed verification. None is activated by this guide. Use cleared synthetic samples until those conditions are met. Follow the [manual cleanup runbook](PRIVACY.md#operator-cleanup-runbook--manual-not-a-scheduler); no cron or automatic app TTL is claimed.

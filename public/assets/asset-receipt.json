@@ -1,0 +1,28 @@
+{
+  "assets": [
+    {
+      "file": "public/assets/model-original.png",
+      "sha256": "befee3a3e686e7fd62328847e967a66e002093dd92fd07aba154f9ee5dd88c82",
+      "bytes": 1822868,
+      "role": "Original synthetic fictional adult sample input; not a YouCam virtual try-on result"
+    },
+    {
+      "file": "public/assets/linen-shirt.png",
+      "sha256": "f5dd7e94c1f4cb9c939e8e2a8660eb6dffc625d3c2b203859774b27ab6b7abce",
+      "bytes": 1998127,
+      "role": "Original synthetic ivory linen garment sample input; not a YouCam virtual try-on result"
+    },
+    {
+      "file": "public/assets/navy-overshirt.png",
+      "sha256": "8d37d53e3c6c530dab5484686224cf119ed627e7564f6806d11e0b644e405d9b",
+      "bytes": 2169951,
+      "role": "Original synthetic navy garment sample input; not a YouCam virtual try-on result"
+    },
+    {
+      "file": "tests/fixtures/result.jpg",
+      "sha256": "8c0274493dcb1d6fba0043fb9a4ce3021111554245478555f3a5febe07beaddb",
+      "bytes": 1822,
+      "role": "JPEG fixture used by mock-provider and isolated HTTP tests; not evidence of a completed live provider task"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Privacy and data retention
 
-Development disclosure, 30 October 2026. This document describes the current source and the intended deployed workflow. Public deployment and real provider processing have not yet been verified. It is not a claim that every operational control has been tested.
+Development disclosure, 30 October 2026. The [hosted workspace](https://threadroom.microusada.com/) is deployed with generation disabled. Origin/public HTTP checks each passed 19/19, including private-path 404s, API no-store and the unconfigured secure session-cookie state. This document describes the current source and intended processing workflow; browser behavior, actual photo processing, Clear/provider deletion and all other operational controls have not yet been verified end to end. No personal photo is needed for current sample inspection.
 
 ## What happens to a photo
 
@@ -28,7 +28,7 @@ Clearing does not reset the budget ledger, erase user downloads or override prov
 
 The [YouCam file-retention documentation](https://docs.perfectcorp.com/develop/file_retention_period) reviewed during API research describes uploads/tasks/results being retained for up to 30 days and result download URLs expiring after two hours. Some endpoint schema text still mentions a shorter task lifetime. These are provider statements with inconsistent details, not an app guarantee. The app therefore downloads results promptly and does not promise immediate or complete provider erasure.
 
-See [Perfect Corp privacy information](https://www.perfectcorp.com/consumer/pages/privacy) and the account's applicable API terms before using real personal photos. Do not infer a particular training, jurisdiction or subprocessors policy from this document.
+The [YouCam API Terms of Service](https://www.perfectcorp.com/perfectbeauty/youcam/terms-of-service-api), reviewed in the version labelled September 2026, apply separately from this app's code license. Section 3.4 addresses authorization for person photos; section 11.2 addresses rights to submitted content; section 12 addresses lawful personal-data processing, valid privacy notices and retained consent. The terms state that submitted content is not used for service improvement without opt-in; that is not a general claim about all processing, storage locations or subprocessors. Verify the account's actual applicable terms before processing real personal photos. See also [Perfect Corp privacy information](https://www.perfectcorp.com/consumer/pages/privacy).
 
 ## Controls in source
 
@@ -38,9 +38,30 @@ Production access/error logs, PHP temporary storage, reverse proxies and backups
 
 Use only adult photos you are authorized to process. Avoid sensitive images and images of children. The app has no public gallery and does not intentionally publish user photos, but consent to generation is not consent to include a photo in a demo video or public repository.
 
+## Support and data requests
+
+Public project support is available through [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues). Issues are public. Describe the general problem and browser/version without uploading photos, API keys, signed URLs, provider task IDs, session identifiers, account details or private logs. Do not ask a user to prove ownership by posting an image or identifier there.
+
+No private operator inbox or secure photo-request intake has been established in this record. An issue may ask the operator to arrange an appropriate private channel without including personal data, but the issue tracker itself is not that channel. A suitable private contact path and verified request procedure must be supplied before accepting public personal photos. Until then, use only the cleared synthetic sample inputs for demonstrations. A public repository is not permission to publish users' photos or consent records.
+
+## Operator cleanup runbook — manual, not a scheduler
+
+This procedure documents how to operate the existing controls; it does not install a scheduled job, implement an automatic TTL or establish a service-level deletion promise. **No cleanup cadence, assigned operator or enabled cron is verified.** Current app results persist until Clear or actual operator action; private job/budget records do not automatically expire.
+
+1. **Before a demonstration:** confirm that only cleared synthetic inputs will be used, that runtime remains outside the webroot, and that the operator can access private storage and the official provider account securely. Do not print private ledgers or account screens. Record the release/date and a nonsensitive start status in an operational receipt; keep task-level records private.
+2. **At the end of each demo/test session:** use that session's **Clear session**, confirm it and record the actual outcome. Confirm page state is gone and previously obtained local result access is no longer available to that session. This is a required manual step, not evidence that it has already happened. If the server cannot confirm cleanup, retry Clear and retain the failure status until verified.
+3. **If known provider tasks remain pending:** with valid provider configuration retained, revisit the normal health flow (`GET /api/health`) to let its bounded reconciliation check known tasks and retry deletion after completion. Health skips provider work when the installation is unconfigured. Do not create a new try-on to force cleanup, and do not assume a single visit drains all outstanding work. Review the remaining cleanup state privately and confirm the session's actual Clear response; task polling alone is not an app-wide cleanup pass. This is request-driven; no background process is promised.
+4. **If a task has no confirmed provider ID:** keep its reservation and uncertain status. Reconcile privately in the official provider account, using the actual operation evidence. Do not guess an ID, blindly repeat a chargeable POST or declare provider erasure. Where the app has no safe administrative command, a code-reviewed maintenance procedure is still required; this document does not supply an untested ledger-edit command.
+5. **Review local leftovers privately:** check for retained local result files, completed-but-not-cleared sessions, PHP temporary storage, logs, cache and backups. There is no general admin cleanup tool or cross-session TTL in this build. Do not recursively delete the runtime directory or remove `ledger.json`/its lock: that would destroy ownership, duplicate-prevention and budget evidence. Any future maintenance tool must preserve accounting and be verified before use.
+6. **Record an honest result:** capture only release/date, what was actually checked, local cleanup pass/fail, outstanding cleanup count and whether private reconciliation is needed. Keep identities, task IDs, photos and raw responses outside Git. Provider retention may still apply even after a successful local clear. User downloads remain under the user's control.
+
+Before enabling public personal-photo processing, the operator must choose and document an actual retention period and cleanup review frequency, assign responsibility, verify the mechanism on the deployed release and establish a suitable private contact channel. Record those facts when real; a proposed daily review or future cron must not be labelled active. Until then, this build makes no app-wide deletion deadline or automatic-expiry claim.
+
 ## Before public use
 
 - Verify the actual provider policy and account terms, the app's data flow and Clear behavior.
-- Set a real operator contact and a documented retention/cleanup schedule. Those are not yet supplied in this development build.
+- Use the public support channel only for nonsensitive reports; establish a suitable private channel and a verified retention/cleanup schedule before accepting public personal photos. No private inbox or schedule is asserted here.
 - Configure upload temporary storage, logs, caching and private runtime access appropriately.
 - Use only cleared sample imagery in the public demo; obtain separate permission for any identifiable person's public appearance.
+
+Official references: [event rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules), [API terms](https://www.perfectcorp.com/perfectbeauty/youcam/terms-of-service-api), [provider retention](https://docs.perfectcorp.com/develop/file_retention_period). These provider statements do not prove the deployed app's cleanup behavior; record actual checks in [VERIFICATION.md](VERIFICATION.md).

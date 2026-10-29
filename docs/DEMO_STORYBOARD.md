@@ -1,11 +1,13 @@
 # Demo storyboard — target 2 minutes 15 seconds
 
-Recording is blocked until a genuine YouCam workflow, cleared assets and a working test environment are available. This is a shot plan, not a claim that the video exists. Use only real captures; never replace a pending result with an independently generated image.
+The [hosted workspace](https://threadroom.microusada.com/) is deployed with generation disabled; origin/public HTTP checks each passed 19/19. Recording the end-to-end workflow remains blocked until genuine YouCam results, cleared assets and browser verification are available. This is a shot plan, not a claim that the video exists. Use only real captures; never replace a pending result with an independently generated image.
+
+The [complete English narration and video-description template](DEMO_NARRATION.md) and [provisional SRT](DEMO_SUBTITLES.srt) are ready for a read-through. Their success statements are conditional on actual verified footage. They are not an existing recording, and cue times must be adjusted to the final audio. Use the [judge guide](JUDGE_GUIDE.md) for the full test flow.
 
 | Time | Picture / action | English narration outline |
 | --- | --- | --- |
-| 0:00–0:12 | Open directly into the full-window fitting workspace, with original sample input clearly labelled. | “Before buying another shirt, I want to compare it with something I already own. THREADROOM puts that choice in one fitting workspace.” |
-| 0:12–0:28 | Select the considered garment and an owned alternative. Show sample/owned labels and the unchanged original person photo. | “The same person, two choices: a possible purchase and an owned alternative. These are input images; no try-on result has been generated yet.” |
+| 0:00–0:12 | Open directly into the full-window fitting workspace. Overlay “Synthetic sample inputs · fictional person and garments.” | “Consider a shopper deciding whether to buy another shirt. THREADROOM compares that possibility with an owned alternative, in one fitting workspace.” |
+| 0:12–0:28 | Select the considered garment and an owned alternative. Show sample/owned labels and the unchanged original person photo. | “These sample garments represent the two choices. The navy shirt stands in for an item already in the wardrobe. No try-on has been generated yet.” |
 | 0:28–0:43 | Explain image rights and tick the actual consent checkbox; start the real generation action. | “I have permission to use these images. Starting a try-on sends them through the private server to YouCam's clothing virtual try-on API.” |
 | 0:43–1:02 | Show the actual queued/running status and an honest cut to completion. Label an edit such as “Processing time shortened” if time is skipped. | “YouCam processes each garment asynchronously. The app checks the existing task, rather than creating another task when a response takes longer.” |
 | 1:02–1:23 | Display genuine A/B results, switch to original/result and move the comparison control. Keep AI output labels visible. | “Now I can compare the two generated looks with the same original photo. This is a visual impression, not a guarantee of size, comfort or physical fit.” |
@@ -25,3 +27,5 @@ Recording is blocked until a genuine YouCam workflow, cleared assets and a worki
 - No unlicensed music, retailer logos or copyrighted footage. Plain narration and app audio are sufficient.
 - If a feature fails verification, omit its demonstration and correct the narration/draft. A planned shot is not permission to claim success.
 - Publish only when authorized through the coordinating agent. Save the real video URL and upload confirmation before marking this step complete.
+
+Source and evidence: [public repository](https://github.com/CarsonCCHsieh/threadroom), initial [main 6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19), [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613) and deployed [workspace](https://threadroom.microusada.com/). [VERIFICATION.md](VERIFICATION.md) records the HTTP checks for working-tree build `6a62a16-r2`, based on the source baseline plus later asset receipts. Source/HTTP evidence does not prove browser interaction or a working API recording. The final video must identify the actual recorded release. See [official video requirements](https://youcam-api-skin-ai-ecommerce.devpost.com/rules).

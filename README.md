@@ -4,13 +4,16 @@ A little more considered. A wardrobe decision workspace for comparing a possible
 
 THREADROOM combines two-look virtual try-on with user-entered price, expected wears and personal notes. Its intended workflow is simple: choose two garments, use the same consented person photo, compare the generated looks, and decide whether the new piece deserves a place in your wardrobe. Cost per wear is arithmetic based on your inputs, not an AI prediction.
 
-**Development status — 30 October 2026:** the local interface and private PHP integration are under active development. No YouCam API key, redeemed activity units, real try-on result or public deployment has been verified for this project. Sample inputs are not YouCam outputs. This is not yet a verified, submission-ready live demo.
+**Development status — 30 October 2026:** the [hosted workspace](https://threadroom.microusada.com/) is deployed with live generation disabled. Origin and public HTTPS checks each passed 19/19; the public round completed at 03:00:14 Asia/Taipei. They verified selected asset bytes/MIME types, CSP, private-path 404s, API routing and the unconfigured health/session-cookie state. Browser interaction and real YouCam generation remain unverified. No API key, redeemed activity units, genuine try-on result, video or final submission is established. Sample inputs are not YouCam outputs.
+
+Source is available in the [public repository](https://github.com/CarsonCCHsieh/threadroom), initial `main` baseline [6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19), with [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613). The deployed working-tree build `6a62a16-r2` contains 23 application files based on that baseline plus later asset receipts; its final complete Git commit remains to be recorded. CI uses mocks and no-key checks. Public reachability does not yet meet the hackathon's working YouCam integration requirement; see [verification evidence](docs/VERIFICATION.md).
 
 ## What is in this build
 
 | Area | Current evidence |
 | --- | --- |
 | Full-window fitting workspace | Interface source is present; browser and device review remain to be recorded. |
+| Hosted entry | [HTTPS workspace](https://threadroom.microusada.com/) deployed; origin/public HTTP checks pass. Live API mode is disabled. |
 | English, Traditional Chinese and Japanese | Translation key parity and bundled CJK glyph checks pass. Browser rendering and language review remain pending. |
 | Two garments: considering / owned | Interface and selection workflow are present in source. No real product partnership or stock feed is claimed. |
 | Price, expected wears and notes | Client-side decision tools; do not infer fit, clothing usage or savings. Runtime verification is pending. |
@@ -49,10 +52,15 @@ See [privacy and retention](docs/PRIVACY.md), [asset sources](docs/ASSETS.md), a
 ## Hackathon materials
 
 - [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
+- [English judge guide](docs/JUDGE_GUIDE.md)
 - [English Devpost draft](docs/DEVPOST_DRAFT.md)
 - [Two-minute demo storyboard](docs/DEMO_STORYBOARD.md)
+- [Full English narration and video description template](docs/DEMO_NARRATION.md)
+- [Draft English subtitles — retime after real recording](docs/DEMO_SUBTITLES.srt)
 
-These are preparation documents, not evidence of registration, API access, publication or submission. The YouCam event requires a working integration, code access, English materials and a 1–3 minute public demonstration. [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) take precedence over this checklist.
+The repository and hosted entry are public. Registration, live API access, a video upload and final submission remain pending. The YouCam event requires a working integration, code access, English materials and a 1–3 minute public demonstration; a deployed workspace with generation disabled does not complete that requirement. [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) take precedence over this checklist.
+
+Public project support: [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues). Report a nonsensitive description and browser/version only. Do not attach photos, API keys, signed URLs, task/session identifiers, account details or private logs. This is a public issue tracker, not a private channel for photo or account requests; see [privacy and operator cleanup](docs/PRIVACY.md).
 
 ## License
 

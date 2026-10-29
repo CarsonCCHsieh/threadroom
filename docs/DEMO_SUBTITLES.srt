@@ -1,0 +1,127 @@
+1
+00:00:00,000 --> 00:00:05,800
+Consider a shopper deciding
+whether to buy another shirt.
+
+2
+00:00:05,800 --> 00:00:12,000
+THREADROOM compares that possibility with
+an owned alternative, in one fitting workspace.
+
+3
+00:00:12,000 --> 00:00:17,500
+These sample garments represent the two choices.
+Both use the same fictional adult input.
+
+4
+00:00:17,500 --> 00:00:23,500
+The navy shirt stands in for an item
+already in the wardrobe.
+
+5
+00:00:23,500 --> 00:00:28,000
+No try-on has been generated yet.
+
+6
+00:00:28,000 --> 00:00:34,000
+With permission to use these images,
+I confirm consent and start the try-on.
+
+7
+00:00:34,000 --> 00:00:43,000
+The selected photos go through the private PHP server
+to YouCam's cloth-v3 clothing virtual try-on API.
+
+8
+00:00:43,000 --> 00:00:48,000
+YouCam processes the garments asynchronously.
+
+9
+00:00:48,000 --> 00:00:53,500
+THREADROOM checks each existing task,
+rather than creating another when a response is slow.
+
+10
+00:00:53,500 --> 00:00:57,000
+This edit shortens the processing wait.
+
+11
+00:00:57,000 --> 00:01:02,000
+What follows must be the actual results
+from these inputs.
+
+12
+00:01:02,000 --> 00:01:07,000
+Here are the two genuine YouCam outputs.
+
+13
+00:01:07,000 --> 00:01:13,000
+I can compare A and B,
+then check either against the original.
+
+14
+00:01:13,000 --> 00:01:17,500
+The labels keep input and AI output distinct.
+
+15
+00:01:17,500 --> 00:01:23,000
+This is a visual impression, not a guarantee
+of size, comfort or physical fit.
+
+16
+00:01:23,000 --> 00:01:28,000
+Now I add an illustrative price of sixty
+and thirty expected wears.
+
+17
+00:01:28,000 --> 00:01:33,000
+Two per wear is simple division,
+based on these inputs.
+
+18
+00:01:33,000 --> 00:01:37,000
+A note keeps the decision personal.
+
+19
+00:01:37,000 --> 00:01:41,000
+The app does not predict habits
+or tell anyone what to buy.
+
+20
+00:01:41,000 --> 00:01:46,000
+The workspace includes English,
+Traditional Chinese and Japanese.
+
+21
+00:01:46,000 --> 00:01:51,500
+Saving notes or a comparison image
+is an explicit local download.
+
+22
+00:01:51,500 --> 00:01:56,000
+It does not publish a photo
+or create a public gallery.
+
+23
+00:01:56,000 --> 00:02:01,000
+Clear removes this page's data
+and requests server cleanup.
+
+24
+00:02:01,000 --> 00:02:05,000
+Pending cleanup stays visible.
+Provider retention still applies,
+
+25
+00:02:05,000 --> 00:02:09,000
+and downloaded files remain on the device.
+
+26
+00:02:09,000 --> 00:02:12,500
+THREADROOM. Compare something new
+with something you already love.
+
+27
+00:02:12,500 --> 00:02:15,000
+The working demo and source
+are in the description.
