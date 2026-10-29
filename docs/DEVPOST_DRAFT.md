@@ -64,15 +64,15 @@ A small retailer or shopper could use a controlled comparison to discuss two gar
 
 - Hosted workspace: [https://threadroom.microusada.com/](https://threadroom.microusada.com/) — reachable with generation disabled; working YouCam API access remains pending
 - Source repository: [CarsonCCHsieh/threadroom — public](https://github.com/CarsonCCHsieh/threadroom)
-- Initial `main` source baseline: [6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19)
-- CI for that baseline: [run 40929341613 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613); fake-provider/no-key checks, not live-generation proof
-- Deployed working-tree build: `6a62a16-r2`, 23 application files based on the initial source baseline plus later asset receipts; origin/public HTTP checks each passed 19/19 with zero provider calls
+- Application source: [a7a7a05](https://github.com/CarsonCCHsieh/threadroom/commit/a7a7a051111ee57f87985a3721320c559b75cfcf)
+- CI for that application source: [run 40937515854 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40937515854); syntax, offline asset receipts, fake-provider and no-key HTTP checks passed, not live-generation or browser proof
+- Deployed build: `6a62a16-r2`; a read-only comparison verified all 23 application files as byte-identical to commit `a7a7a05`; origin/public HTTP checks each passed 19/19 with zero provider calls
 - English judge instructions: [JUDGE_GUIDE.md](JUDGE_GUIDE.md), prepared; browser behavior and genuine provider outcomes pending
 - 1–3 minute public video: pending
-- Final tested commit / release: pending; the initial baseline is not a verified live release
+- Final tested commit / release: pending browser/live verification and the actual video; the application-source commit alone is not a verified live release
 
 ## Submission editing notes
 
-Before publication, reconcile every sentence with [VERIFICATION.md](VERIFICATION.md), replace pending links and describe only the features demonstrated by the final build. Ensure the final repository contains the guide and updated documentation; later uncommitted documents are not automatically part of the baseline link. Keep private account details and test credentials out of public prose; use an appropriate private testing field if one is necessary. Do not select a student or women-in-tech award category without the entrant's confirmed eligibility, or turn the technical learning paragraph into an invented personal survey answer. Public support is [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues); do not post photos, keys or private account/task/session details there.
+Before publication, reconcile every sentence with [VERIFICATION.md](VERIFICATION.md), replace pending links and describe only the features demonstrated by the final build. This draft revision is a later evidence update, not part of application-source commit `a7a7a05`. Ensure the final repository includes the guide and subsequent documentation and records their actual release reference. Keep private account details and test credentials out of public prose; use an appropriate private testing field if one is necessary. Do not select a student or women-in-tech award category without the entrant's confirmed eligibility, or turn the technical learning paragraph into an invented personal survey answer. Public support is [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues); do not post photos, keys or private account/task/session details there.
 
 Source requirements: [official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules), [free-unit resources](https://youcam-api-skin-ai-ecommerce.devpost.com/resources), [API terms](https://www.perfectcorp.com/perfectbeauty/youcam/terms-of-service-api). [ASSETS.md](ASSETS.md) and [PRIVACY.md](PRIVACY.md) preserve the distinction between input rights, public-video permission, code licensing and provider retention.

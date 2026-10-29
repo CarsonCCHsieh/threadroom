@@ -8,9 +8,9 @@
 | --- | --- |
 | Hosted entry | [https://threadroom.microusada.com/](https://threadroom.microusada.com/) — deployed, live generation disabled; public HTTP checks passed at 03:00:14 Asia/Taipei on 30 October 2026 |
 | Source | [CarsonCCHsieh/threadroom](https://github.com/CarsonCCHsieh/threadroom) — public |
-| Initial source baseline | [main 6a62a16](https://github.com/CarsonCCHsieh/threadroom/commit/6a62a1602821340278cac4e42e72dd8ba7551e19), committed 30 October 2026, 02:16:42 Asia/Taipei |
-| CI | [Run 40929341613 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40929341613); fake-provider and no-key checks do not demonstrate a live provider task |
-| Deployed build / final tested release | Working-tree build `6a62a16-r2`, 23 application files based on the initial baseline plus later asset receipts. Complete final Git commit and actual browser/device verification remain pending; see [VERIFICATION.md](VERIFICATION.md). |
+| Application source | [a7a7a05](https://github.com/CarsonCCHsieh/threadroom/commit/a7a7a051111ee57f87985a3721320c559b75cfcf); this guide revision is a later evidence update, not part of the linked commit |
+| CI | [Run 40937515854 — success](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40937515854); syntax, offline asset receipts, fake-provider and no-key HTTP checks passed; no live provider task or browser behavior is demonstrated |
+| Deployed build / final tested release | Build `6a62a16-r2`: a read-only comparison verified all 23 application files as byte-identical to commit `a7a7a05`. The final tested release remains pending browser/device and genuine live-flow verification plus the actual video; see [VERIFICATION.md](VERIFICATION.md). |
 | Public demo video | Pending real recording and upload; [storyboard](DEMO_STORYBOARD.md) and [narration](DEMO_NARRATION.md) are preparation only |
 
 The final entry must provide free, functioning judge access through **21 November 2026, 00:45 Asia/Taipei**. Judges should not have to buy units or supply a personal provider key. The entry is publicly reachable now, but working API access through judging has not been verified. A source review or the currently disconnected hosted workspace cannot satisfy the working YouCam integration requirement by itself. See the [official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules).
