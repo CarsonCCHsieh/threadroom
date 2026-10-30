@@ -1,62 +1,73 @@
-# Demo narration and publication template
+# Frozen demo narration - 2 minutes 20 seconds
 
-**Not recorded or uploaded.** This is a complete English recording script for a target 2:15 film. The [hosted workspace](https://threadroom.microusada.com/) is deployed and its current r3 build passed public HTTP checks with generation disabled; earlier r2 origin/public checks are historical evidence. Live API results, browser verification and a public video URL remain pending. Read this script only over footage of the actual verified workflow: HTTP delivery does not make its generation/comparison claims true. Before recording, complete [the capture gates](DEMO_STORYBOARD.md#capture-checklist); after recording, correct the script and [subtitle template](DEMO_SUBTITLES.srt) to match what actually happened.
+The 140-second English film has a verified [YouTube upload](https://youtu.be/LzYA8Om5eT8) with **YouTube Studio publication/public selection confirmed** on 30 October 2026. The watch page displayed 2:20 and played from 0:00 to 0:02 in the existing signed-in Chrome session before being paused. Anonymous access, full playback and complete listening/visual review remain unverified. It is edited from earlier local UI screenshots and the actual comparison download, with genuine YouCam results. The later public-site two-look validation is separate; this film is not a full capture of that public run. It is not a continuous recording. No running-state capture, generated UI frame or completed browser Clear is presented. Synthetic English narration and burned English captions are included; a full human listening pass is not documented by the media manifest.
 
-## Full narration
+The fictional sample price and owned-garment language describe the cleared synthetic demonstration scenario. They are not live retailer prices, actual ownership evidence or measured savings. The comparison card was captured before the later expected-wear edit, so it must not be described as an export of the final 50-wear state.
 
-The timings are editing targets, not measured generation time. Speak naturally; shorten or retime the cut while keeping the final film between one and three minutes. Never stretch an error or placeholder into a success claim.
+## Exact frozen narration
 
-| Target time | Read aloud | Required picture / label |
-| --- | --- | --- |
-| 0:00–0:12 | Consider a shopper deciding whether to buy another shirt. THREADROOM compares that possibility with an owned alternative, in one fitting workspace. | Open directly into the app. Overlay: **Synthetic sample inputs · fictional person and garments**. |
-| 0:12–0:28 | These sample garments represent the two choices. Both use the same fictional adult input. The navy shirt stands in for an item already in the wardrobe. No try-on has been generated yet. | Show both garment selections and **SAMPLE / ORIGINAL INPUT**. Do not label the samples as genuine owned products. |
-| 0:28–0:43 | With permission to use these images, I confirm consent and start the try-on. The selected photos go through the private PHP server to YouCam's cloth-v3 clothing virtual try-on API. | Show actual consent and actual generation click. Keep keys, account screens and developer tools off screen. |
-| 0:43–1:02 | YouCam processes the garments asynchronously. THREADROOM checks each existing task, rather than creating another when a response is slow. This edit shortens the processing wait. What follows must be the actual results from these inputs. | Capture the real queued/running states. Overlay **Processing time shortened** only if a wait is cut. If no time is cut, replace the edit sentence and matching subtitle with the observed wait. |
-| 1:02–1:23 | Here are the two genuine YouCam outputs. I can compare A and B, then check either against the original. The labels keep input and AI output distinct. This is a visual impression, not a guarantee of size, comfort or physical fit. | Genuine completed outputs only. Show A/B, selected look, before/after and labels. If either output is missing, do not read this claim. |
-| 1:23–1:41 | Now I add an illustrative price of sixty and thirty expected wears. Two per wear is simple division, based on these inputs. A note keeps the decision personal. The app does not predict habits or tell anyone what to buy. | Enter 60 / 30 in the selected currency, show actual result and a short nonsensitive note. No real retailer price claim. |
-| 1:41–1:56 | The workspace includes English, Traditional Chinese and Japanese. Saving notes or a comparison image is an explicit local download. It does not publish a photo or create a public gallery. | Switch languages and demonstrate only exports that passed real browser verification. Do not expose a desktop username in a download dialog. |
-| 1:56–2:09 | Clear removes this page's data and requests server cleanup. Pending cleanup stays visible. Provider retention still applies, and downloaded files remain on the device. | Show Privacy, then actual Clear confirmation and resulting status. Do not replace a pending/manual message with an erasure claim. |
-| 2:09–2:15 | THREADROOM. Compare something new with something you already love. The working demo and source are in the description. | Use the final sentence only after a working demo is verified and its real URL is included. Otherwise do not release the film. |
+The following words and cue times match [DEMO_SUBTITLES.srt](DEMO_SUBTITLES.srt). Editorial still holds/crops do not show unrecorded actions.
 
-The [SRT file](DEMO_SUBTITLES.srt) mirrors this script with provisional cues. Do not upload those cues unchanged: retime to the final audio, check each line on a mobile-size player, and remove production notes from final visible subtitles. If the real cut is different, update the script, SRT and Devpost text together.
+| Cue time | Narration |
+| --- | --- |
+| 00:00:00.450 - 00:00:04.890 | Before buying another shirt, compare it with one you already own. |
+| 00:00:04.910 - 00:00:06.535 | Meet Threadroom. |
+| 00:00:08.250 - 00:00:11.485 | A linen shirt costs sixty-eight dollars. |
+| 00:00:11.505 - 00:00:14.335 | The navy overshirt is already owned. |
+| 00:00:14.355 - 00:00:18.920 | Threadroom puts them in the same fitting room, before another purchase. |
+| 00:00:20.250 - 00:00:23.595 | Start with the original sample and two garments. |
+| 00:00:23.615 - 00:00:27.215 | The interface asks permission to send the selected photos to YouCam |
+| 00:00:27.235 - 00:00:28.930 | for this try-on. |
+| 00:00:31.250 - 00:00:35.470 | These two results came from actual YouCam API tasks. |
+| 00:00:35.490 - 00:00:39.085 | The linen shirt and navy overshirt are generated visualizations of the |
+| 00:00:39.105 - 00:00:44.100 | same sample person. They are not preloaded try-on results. |
+| 00:00:46.250 - 00:00:49.400 | Before and after keeps the original in view. |
+| 00:00:49.420 - 00:00:52.730 | Look at the linen shirt against that reference, with the difference |
+| 00:00:52.750 - 00:00:55.160 | in appearance easy to inspect. |
+| 00:00:59.250 - 00:01:03.310 | Switch to the owned navy overshirt and use the same reference. |
+| 00:01:03.330 - 00:01:07.405 | A familiar piece gets equal attention, instead of disappearing behind the |
+| 00:01:07.425 - 00:01:09.390 | idea of something new. |
+| 00:01:12.250 - 00:01:15.525 | Save the comparison while you weigh your options. |
+| 00:01:15.545 - 00:01:20.035 | This is the actual downloaded card, carrying both looks, their labels |
+| 00:01:20.055 - 00:01:24.535 | and ownership status, plus a reminder that visualization cannot verify |
+| 00:01:24.555 - 00:01:26.120 | physical fit. |
+| 00:01:27.250 - 00:01:29.650 | Then make the assumption your own. |
+| 00:01:29.670 - 00:01:34.400 | At fifty estimated wears, sixty-eight dollars becomes one dollar and thirty-six |
+| 00:01:34.420 - 00:01:38.640 | cents per wear. The number changes with your estimate, not an |
+| 00:01:38.660 - 00:01:40.350 | AI prediction. |
+| 00:01:43.250 - 00:01:48.665 | The same workspace is available in English, Traditional Chinese, and Japanese. |
+| 00:01:48.685 - 00:01:52.625 | The results stay available as the interface changes, rather than starting |
+| 00:01:52.645 - 00:01:54.455 | another generation. |
+| 00:01:55.250 - 00:01:57.555 | Photos deserve a boundary. |
+| 00:01:57.575 - 00:02:02.010 | The privacy panel explains third-party processing and retention. |
+| 00:02:02.030 - 00:02:04.915 | Sharing your card remains your choice. |
+| 00:02:04.935 - 00:02:09.365 | Local controls cannot promise deletion from the provider's systems. |
+| 00:02:10.250 - 00:02:12.960 | Threadroom leaves the decision with you. |
+| 00:02:12.980 - 00:02:17.135 | Something new, something already yours, and a little more thought before |
+| 00:02:17.155 - 00:02:18.905 | the next purchase. |
 
-## Recording settings and read-through
+## Media identity and remaining review
 
-- Capture the verified target browser at 1920×1080 or another clearly legible 16:9 size. Record the actual browser/version, viewport, release and date in the private capture log; add only nonsensitive facts to [VERIFICATION.md](VERIFICATION.md).
-- Use EN for the main flow; show the real 繁中 and 日本語 interfaces briefly. Keep application text readable at normal playback size, use a visible pointer and avoid rapid zooming. Confirm the whole window fits before recording.
-- Hide notifications, bookmarks, account/avatar menus, terminal history, personal folders and developer tools. Never capture a provider console or full-screen desktop when the application window will do.
-- Record the genuine wait once. A cut may shorten that same task; show **Processing time shortened** over the cut. Do not invent elapsed seconds or progress percentages, splice a different input/result pair, or hide a failed result.
-- Use clean narration without unlicensed music. Any additional artwork, music or footage needs a documented source and permission. The bundled sample inputs and genuine provider outputs have separate provenance; neither becomes MIT merely because the code is MIT.
-- Watch the final render end to end. Confirm English captions, original/output labels, public-use rights, no private details, 1–3 minute duration, real links and agreement with the submitted release before requesting publication.
+- Prepared MP4: 140 seconds, 1920 x 1080, 30 fps, H.264/AAC; 5,393,492 bytes.
+- MP4 SHA256: `cf7ebbb16fdb041df930aaa34cfd83b37bdff5dcd2d178e01d0a42fe1ce440c9`.
+- Matching English SRT SHA256: `afd50209b03c6268bb2e3637b8a0845cdd1e2c7288d41afda0938571739c25ca`.
+- Upload verified: [YouTube upload](https://youtu.be/LzYA8Om5eT8). Title: **THREADROOM — A Little More Considered | YouCam API Hackathon**. Studio publication/public selection and bounded signed-in playback from 0:00 to 0:02 verified; anonymous/full playback remains unverified.
+- Complete the remaining published audio/picture, caption-readability, private-detail and playable-link review; formal [Devpost submission](https://devpost.com/software/threadroom) was confirmed at 08:44:19 UTC on 30 October 2026. The stored edit does not establish public API activation, mobile behavior or browser Clear completion.
 
-## Video title
-
-`THREADROOM — Compare before you buy | YouCam API Hackathon`
-
-## Video description — fill after real capture
-
-The following is a template. Replace the bracketed fields with actual verified references; do not publish brackets, a nonexistent demo or a guessed release.
+## Local description reference - not a read-back of the published description
 
 ```text
-THREADROOM is a wardrobe decision workspace: compare a possible purchase with an owned alternative on the same person, then add your own price, expected wears and notes.
+THREADROOM compares a possible purchase with an owned alternative on the same person, then adds your own price, expected wears and notes.
+
+This 2:20 film is edited from actual application screenshots and an actual downloaded comparison card, with genuine YouCam cloth-v3 results. It is not a continuous screen recording. The person and garments are cleared synthetic inputs; ownership and the $68 price are fictional scenario labels. The downloaded card precedes the later expected-wear change. $68 / 50 estimated wears = $1.36 per wear is arithmetic, not an AI prediction or measured saving.
 
 Hosted workspace: https://threadroom.microusada.com/
-Working API / free judge access through judging: [VERIFY BEFORE PUBLICATION]
-English testing guide: [GUIDE URL IN THE PUBLISHED FINAL RELEASE]
+Public live/API judging access: enabled for cleared synthetic samples, no visitor account/key/payment; session/global capacity and provider reserve apply. Continuing availability through judging remains an operational requirement.
 Source: https://github.com/CarsonCCHsieh/threadroom
-Recorded release: [ACTUAL COMMIT URL]
-Recording date / browser: [ACTUAL NONSENSITIVE DETAILS]
+Submitted project: https://devpost.com/software/threadroom
+Judge guide, privacy and assets: docs/JUDGE_GUIDE.md, docs/PRIVACY.md and docs/ASSETS.md in the repository
 
-The recording shows genuine YouCam cloth-v3 upper-body virtual try-on results generated from the displayed inputs. The sample person and garments are synthetic, fictional original inputs; they are not retail products or pre-generated YouCam results. [STATE WHETHER A PROCESSING WAIT WAS SHORTENED.]
-
-AI output is a visual impression, not a size, comfort or physical-fit guarantee. Prices and expected wears are illustrative user inputs. No measured savings, return reduction or environmental impact is claimed. There is no checkout or public photo gallery.
-
-Asset and font provenance: [ASSETS.MD URL IN FINAL RELEASE]
-Privacy, provider retention and cleanup limits: [PRIVACY.MD URL IN FINAL RELEASE]
-Code/docs: MIT. Fonts: SIL OFL 1.1. Images and service outputs retain their separate applicable conditions.
-
-Public project support: https://github.com/CarsonCCHsieh/threadroom/issues
-Do not post photos, keys, signed URLs, task/session identifiers, account details or private logs in public issues.
+AI visualization does not verify physical fit. Separate live-site review passed limited English/Japanese full-page/comparison checks at a measured 375px browser viewport. Browser Clear, real mobile hardware and comprehensive accessibility remain unverified. Provider retention applies; this film does not demonstrate deletion. No checkout, public gallery or measured environmental benefit is claimed.
 ```
 
-YouCam's [official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) call for an actual 1–3 minute public demonstration on YouTube (preferred) or Vimeo, with English material or complete English translation and an explanation of the API use. This document does not authorize uploading a new video. Keep the actual upload confirmation and final playable URL before marking the video complete.
+This is a local description draft, not a read-back of the published description. For any later description edit, reconcile the activation/remaining-check statements with actual evidence and use the current verified release links. Keep private account details, credentials, signed URLs, task/session identifiers and local paths out of the final description and footage. [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) require an actual 1-3 minute public demonstration with English material or a complete English translation. Separate watch-page observation established only 0:00 to 0:02 playback of the displayed 2:20 film in the existing signed-in Chrome session, not anonymous access or a complete playback review.

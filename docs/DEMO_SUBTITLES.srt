@@ -1,127 +1,159 @@
 1
-00:00:00,000 --> 00:00:05,800
-Consider a shopper deciding
-whether to buy another shirt.
+00:00:00,450 --> 00:00:04,890
+Before buying another shirt, compare
+it with one you already own.
 
 2
-00:00:05,800 --> 00:00:12,000
-THREADROOM compares that possibility with
-an owned alternative, in one fitting workspace.
+00:00:04,910 --> 00:00:06,535
+Meet Threadroom.
 
 3
-00:00:12,000 --> 00:00:17,500
-These sample garments represent the two choices.
-Both use the same fictional adult input.
+00:00:08,250 --> 00:00:11,485
+A linen shirt costs sixty-eight dollars.
 
 4
-00:00:17,500 --> 00:00:23,500
-The navy shirt stands in for an item
-already in the wardrobe.
+00:00:11,505 --> 00:00:14,335
+The navy overshirt is already owned.
 
 5
-00:00:23,500 --> 00:00:28,000
-No try-on has been generated yet.
+00:00:14,355 --> 00:00:18,920
+Threadroom puts them in the same
+fitting room, before another purchase.
 
 6
-00:00:28,000 --> 00:00:34,000
-With permission to use these images,
-I confirm consent and start the try-on.
+00:00:20,250 --> 00:00:23,595
+Start with the original
+sample and two garments.
 
 7
-00:00:34,000 --> 00:00:43,000
-The selected photos go through the private PHP server
-to YouCam's cloth-v3 clothing virtual try-on API.
+00:00:23,615 --> 00:00:27,215
+The interface asks permission to
+send the selected photos to YouCam
 
 8
-00:00:43,000 --> 00:00:48,000
-YouCam processes the garments asynchronously.
+00:00:27,235 --> 00:00:28,930
+for this try-on.
 
 9
-00:00:48,000 --> 00:00:53,500
-THREADROOM checks each existing task,
-rather than creating another when a response is slow.
+00:00:31,250 --> 00:00:35,470
+These two results came from
+actual YouCam API tasks.
 
 10
-00:00:53,500 --> 00:00:57,000
-This edit shortens the processing wait.
+00:00:35,490 --> 00:00:39,085
+The linen shirt and navy overshirt
+are generated visualizations of the
 
 11
-00:00:57,000 --> 00:01:02,000
-What follows must be the actual results
-from these inputs.
+00:00:39,105 --> 00:00:44,100
+same sample person. They are
+not preloaded try-on results.
 
 12
-00:01:02,000 --> 00:01:07,000
-Here are the two genuine YouCam outputs.
+00:00:46,250 --> 00:00:49,400
+Before and after keeps the original in view.
 
 13
-00:01:07,000 --> 00:01:13,000
-I can compare A and B,
-then check either against the original.
+00:00:49,420 --> 00:00:52,730
+Look at the linen shirt against that
+reference, with the difference
 
 14
-00:01:13,000 --> 00:01:17,500
-The labels keep input and AI output distinct.
+00:00:52,750 --> 00:00:55,160
+in appearance easy to inspect.
 
 15
-00:01:17,500 --> 00:01:23,000
-This is a visual impression, not a guarantee
-of size, comfort or physical fit.
+00:00:59,250 --> 00:01:03,310
+Switch to the owned navy overshirt
+and use the same reference.
 
 16
-00:01:23,000 --> 00:01:28,000
-Now I add an illustrative price of sixty
-and thirty expected wears.
+00:01:03,330 --> 00:01:07,405
+A familiar piece gets equal attention,
+instead of disappearing behind the
 
 17
-00:01:28,000 --> 00:01:33,000
-Two per wear is simple division,
-based on these inputs.
+00:01:07,425 --> 00:01:09,390
+idea of something new.
 
 18
-00:01:33,000 --> 00:01:37,000
-A note keeps the decision personal.
+00:01:12,250 --> 00:01:15,525
+Save the comparison while
+you weigh your options.
 
 19
-00:01:37,000 --> 00:01:41,000
-The app does not predict habits
-or tell anyone what to buy.
+00:01:15,545 --> 00:01:20,035
+This is the actual downloaded card,
+carrying both looks, their labels
 
 20
-00:01:41,000 --> 00:01:46,000
-The workspace includes English,
-Traditional Chinese and Japanese.
+00:01:20,055 --> 00:01:24,535
+and ownership status, plus a reminder
+that visualization cannot verify
 
 21
-00:01:46,000 --> 00:01:51,500
-Saving notes or a comparison image
-is an explicit local download.
+00:01:24,555 --> 00:01:26,120
+physical fit.
 
 22
-00:01:51,500 --> 00:01:56,000
-It does not publish a photo
-or create a public gallery.
+00:01:27,250 --> 00:01:29,650
+Then make the assumption your own.
 
 23
-00:01:56,000 --> 00:02:01,000
-Clear removes this page's data
-and requests server cleanup.
+00:01:29,670 --> 00:01:34,400
+At fifty estimated wears, sixty-eight
+dollars becomes one dollar and thirty-six
 
 24
-00:02:01,000 --> 00:02:05,000
-Pending cleanup stays visible.
-Provider retention still applies,
+00:01:34,420 --> 00:01:38,640
+cents per wear. The number changes
+with your estimate, not an
 
 25
-00:02:05,000 --> 00:02:09,000
-and downloaded files remain on the device.
+00:01:38,660 --> 00:01:40,350
+AI prediction.
 
 26
-00:02:09,000 --> 00:02:12,500
-THREADROOM. Compare something new
-with something you already love.
+00:01:43,250 --> 00:01:48,665
+The same workspace is available in English,
+Traditional Chinese, and Japanese.
 
 27
-00:02:12,500 --> 00:02:15,000
-The working demo and source
-are in the description.
+00:01:48,685 --> 00:01:52,625
+The results stay available as the
+interface changes, rather than starting
+
+28
+00:01:52,645 --> 00:01:54,455
+another generation.
+
+29
+00:01:55,250 --> 00:01:57,555
+Photos deserve a boundary.
+
+30
+00:01:57,575 --> 00:02:02,010
+The privacy panel explains third-party
+processing and retention.
+
+31
+00:02:02,030 --> 00:02:04,915
+Sharing your card remains your choice.
+
+32
+00:02:04,935 --> 00:02:09,365
+Local controls cannot promise deletion
+from the provider's systems.
+
+33
+00:02:10,250 --> 00:02:12,960
+Threadroom leaves the decision with you.
+
+34
+00:02:12,980 --> 00:02:17,135
+Something new, something already yours,
+and a little more thought before
+
+35
+00:02:17,155 --> 00:02:18,905
+the next purchase.

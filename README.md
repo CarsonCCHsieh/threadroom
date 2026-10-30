@@ -4,25 +4,29 @@ A little more considered. A wardrobe decision workspace for comparing a possible
 
 THREADROOM combines two-look virtual try-on with user-entered price, expected wears and personal notes. Its intended workflow is simple: choose two garments, use the same consented person photo, compare the generated looks, and decide whether the new piece deserves a place in your wardrobe. Cost per wear is arithmetic based on your inputs, not an AI prediction.
 
-**Development status — 30 October 2026:** the [hosted workspace](https://threadroom.microusada.com/), build `threadroom-12c5c77-r3`, is deployed with live generation disabled. Public HTTPS checks passed 19/19 at 03:43:28 Asia/Taipei. They verified selected asset bytes/MIME types, CSP, private-path 404s, API routing and the unconfigured health/session-cookie state. Browser interaction and real YouCam generation remain unverified. No API key, redeemed activity units, genuine try-on result, video or final submission is established. Sample inputs are not YouCam outputs.
+**Submitted to the YouCam API Hackathon:** [THREADROOM on Devpost](https://devpost.com/software/threadroom). **[Try the live workspace](https://threadroom.microusada.com/)** using the included cleared synthetic samples, give processing consent and choose Try these two looks once. No visitor account, provider key or payment is required; session/global limits and the protected reserve apply. [Judge guide](docs/JUDGE_GUIDE.md).
 
-Application source is published at [12c5c77](https://github.com/CarsonCCHsieh/threadroom/commit/12c5c775f05de44866547db7c36ea5253b7fa65a), with [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40942475438) covering offline asset receipts, syntax, 21 fake-provider cases and isolated no-key HTTP smoke. A read-only comparison verified that all 23 application files in deployed build `threadroom-12c5c77-r3` are byte-identical to that commit. This documentation revision is a later evidence update, not part of the linked application-source commit. Browser/live API verification, the video and the final tested release remain pending. Public reachability does not yet meet the hackathon's working YouCam integration requirement; see [verification evidence](docs/VERIFICATION.md), including historical evidence for the earlier build.
+**Verified locally, 30 October 2026:** one native smoke and a single two-look browser action completed three genuine YouCam `cloth-v3` tasks using cleared synthetic inputs. Both browser results loaded at 1024 x 1536. Desktop checks exercised A/B and before/after comparison, English/Traditional Chinese/Japanese controls, price/expected-wear arithmetic, and explicit JSON/PNG downloads. See [the bounded verification record](docs/VERIFICATION.md).
 
-The deployed application includes bounded recovery of a completed task's result and releases generation capacity after a documented task-create rejection. All lifetime unit reservations remain in place, and chargeable POSTs are never automatically retried. These paths have mock regression coverage in the linked CI; no real provider request was made for that coverage, deployment or public HTTP checks.
+The [public workspace](https://threadroom.microusada.com/) is **live-enabled**. After activation on 30 October 2026, one public two-look action with cleared synthetic samples returned both Ready results, loaded at 1024 x 1536. Together with the three local tasks, five genuine tasks have completed. The limited sample path requires no account, provider key or payment from the visitor; use cleared synthetic samples while private support and retention/cleanup verification remain incomplete.
+
+The [140-second English film](https://youtu.be/LzYA8Om5eT8) is publicly published. In the existing signed-in Chrome session, the watch page showed 2:20 and played from 0:00 to 0:02 before being paused. Anonymous access, complete playback and the full listening review are not established. The film uses the earlier local UI screenshots and comparison download, not a full recording of the later public-site test. A later 375px-wide browser viewport passed bounded English/Japanese visual comparison checks; real mobile hardware, comprehensive accessibility and browser Clear remain unverified.
+
+Application source [12c5c77](https://github.com/CarsonCCHsieh/threadroom/commit/12c5c775f05de44866547db7c36ea5253b7fa65a) has [successful CI](https://github.com/CarsonCCHsieh/threadroom/actions/runs/40942475438), including 21 fake-provider cases and isolated no-key HTTP smoke. The recorded r3 deployment matched its 23 application files and passed public HTTPS checks 19/19 with live disabled. These historical delivery checks are separate from the later local real-provider/browser evidence and this documentation update.
 
 ## What is in this build
 
 | Area | Current evidence |
 | --- | --- |
-| Full-window fitting workspace | Interface source is present; browser and device review remain to be recorded. |
-| Hosted entry | [HTTPS workspace](https://threadroom.microusada.com/) deployed; r3 public HTTP checks pass 19/19. Live API mode is disabled. |
-| English, Traditional Chinese and Japanese | Translation key parity and bundled CJK glyph checks pass. Browser rendering and language review remain pending. |
-| Two garments: considering / owned | Interface and selection workflow are present in source. No real product partnership or stock feed is claimed. |
-| Price, expected wears and notes | Client-side decision tools; do not infer fit, clothing usage or savings. Runtime verification is pending. |
-| A/B and original/result comparison | Designed for genuine results from the same input photo. Live comparison has not yet been verified. |
-| Notes and comparison downloads | Explicit local-download code is present; comparison export requires at least one real completed result and labels any remaining original input. Browser verification is pending. |
-| YouCam `cloth-v3` integration | Server-side upload, task, polling and result handling are implemented in source. Provider authentication and execution remain unverified. |
-| Private results and deletion | Session ownership, private storage and cleanup requests exist in source. Provider erasure is not guaranteed. |
+| Full-window fitting workspace | Desktop flow and limited 375px English/Japanese full-page/comparison review verified; no horizontal overflow in that measured viewport. Real mobile hardware and comprehensive accessibility remain unverified. |
+| Hosted entry | Live activation/public two-look action verified. Independent post-activation HTTPS checks passed 19/19 at that point in time, with configured/liveAvailable true. |
+| English, Traditional Chinese and Japanese | Actual desktop language switching and DOM checked; static key/glyph checks are separate evidence. |
+| Two garments: considering / owned | Local and public two-look actions each returned both results. Bundled garments are fictional scenario inputs, with no retailer partnership. |
+| Price, expected wears and notes | Browser input 68 / 50 displayed 1.36 per wear. This is arithmetic, with no usage or savings prediction. |
+| A/B and original/result comparison | Actual desktop A/B and before/after views exercised on the generated results. No physical-fit claim. |
+| Notes and comparison downloads | Actual PNG comparison downloaded; 749-byte JSON contained no images or URLs. Export integrity is recorded in the verification page. |
+| YouCam `cloth-v3` integration | Strict-TLS preflight, three real local tasks and two real public tasks completed. Current balance has not been rechecked after the public pair. |
+| Private results and deletion | Foreign-session result access returned 404. Browser Clear completion is pending; this is not a deletion/erasure pass. |
 
 The backend fails closed when live mode, credentials, cost verification or available units are missing. It does not produce simulated success states. Backend tests use a fake provider transport; they cannot prove real YouCam compatibility.
 
@@ -47,7 +51,7 @@ On Windows, `powershell.exe -NoProfile -File .\tools\configure-provider.ps1` pro
 - Prices and expected wears are entered by the user. Sample prices are illustrative, not live offers.
 - There is no checkout, public gallery, account system, purchase recommendation score or measured claim about returns, savings or environmental impact.
 - Choosing a photo prepares it in the browser. Starting a live try-on sends selected images through this server to YouCam after consent.
-- Clear removes the current page's data and requests server cleanup. It cannot undo a third party's applicable retention policy.
+- Clear is designed to remove current page data and request server cleanup. The latest browser attempt did not visibly complete; completion remains unverified. Provider retention and user downloads remain separate.
 
 See [privacy and retention](docs/PRIVACY.md), [asset sources](docs/ASSETS.md), and [verification status](docs/VERIFICATION.md).
 
@@ -55,12 +59,12 @@ See [privacy and retention](docs/PRIVACY.md), [asset sources](docs/ASSETS.md), a
 
 - [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [English judge guide](docs/JUDGE_GUIDE.md)
-- [English Devpost draft](docs/DEVPOST_DRAFT.md)
-- [Two-minute demo storyboard](docs/DEMO_STORYBOARD.md)
+- [English submission story and evidence](docs/DEVPOST_DRAFT.md)
+- [Frozen 140-second demo timeline](docs/DEMO_STORYBOARD.md)
 - [Full English narration and video description template](docs/DEMO_NARRATION.md)
-- [Draft English subtitles — retime after real recording](docs/DEMO_SUBTITLES.srt)
+- [English captions matching the frozen film](docs/DEMO_SUBTITLES.srt)
 
-The repository and hosted entry are public. Registration, live API access, a video upload and final submission remain pending. The YouCam event requires a working integration, code access, English materials and a 1–3 minute public demonstration; a deployed workspace with generation disabled does not complete that requirement. [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) take precedence over this checklist.
+The repository and live sample path are public. Registration, local and public real-API workflows, video publication and bounded watch-page playback are verified. **Formal submission was confirmed on 30 October 2026 at 08:44:19 UTC**: the project page showed Project submitted!, Submitted to and Edit hackathon submission. The [public entry](https://devpost.com/software/threadroom) contains the saved cover, five-image gallery with captions, story, additional information and public 140-second video. This success confirmation is authoritative; no separate completion-step count is asserted. Final video review, anonymous/full playback, browser Clear, real mobile hardware/comprehensive accessibility and availability through judging remain to be confirmed. The YouCam event requires a working integration, code access, English materials and a 1–3 minute public demonstration; initial success is not a guarantee of continuous availability. [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) take precedence over this checklist.
 
 Public project support: [GitHub Issues](https://github.com/CarsonCCHsieh/threadroom/issues). Report a nonsensitive description and browser/version only. Do not attach photos, API keys, signed URLs, task/session identifiers, account details or private logs. This is a public issue tracker, not a private channel for photo or account requests; see [privacy and operator cleanup](docs/PRIVACY.md).
 

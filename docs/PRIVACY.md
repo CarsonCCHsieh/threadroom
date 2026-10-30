@@ -1,12 +1,12 @@
 # Privacy and data retention
 
-Development disclosure, 30 October 2026. The [hosted workspace](https://threadroom.microusada.com/) is deployed with generation disabled. Origin/public HTTP checks each passed 19/19, including private-path 404s, API no-store and the unconfigured secure session-cookie state. This document describes the current source and intended processing workflow; browser behavior, actual photo processing, Clear/provider deletion and all other operational controls have not yet been verified end to end. No personal photo is needed for current sample inspection.
+Development disclosure, 30 October 2026. Three real local tasks and two real public-site tasks processed cleared synthetic person/garment inputs. Local desktop comparisons/downloads and the public two-look result path were exercised; no personal photo was needed. The public sample path is live-enabled and limited, with no visitor account, provider key or payment required. Use only cleared synthetic samples until a private support path and retention/cleanup verification are established. Browser Clear did not visibly complete, so end-to-end cleanup remains unverified; a foreign-session 404 establishes ownership isolation only. An independent post-activation HTTPS check passed 19/19, including seven private-path 404s and secure cookie/no-store checks; those observations are not deletion or erasure proof. [VERIFICATION.md](VERIFICATION.md) separates the bounded browser evidence from HTTP checks.
 
 ## What happens to a photo
 
 | Stage | Data and location | Lifetime / limitation |
 | --- | --- | --- |
-| Selecting a photo | The interface prepares a preview in browser memory. Client code is intended to resize and re-encode images, removing EXIF metadata. | No intentional photo persistence in localStorage or an account. Reloading loses unsaved page state. Browser behavior still needs verification. |
+| Selecting a photo | The interface prepares a preview in browser memory. Client code is intended to resize and re-encode images, removing EXIF metadata. | No intentional photo persistence in localStorage or an account. Reloading loses unsaved page state. The bounded desktop flow does not establish every storage or browser behavior. |
 | Starting a try-on | After the explicit consent checkbox and generation action, person and garment images are sent to this app's same-origin PHP endpoint, then to YouCam. | Images leave the device. This is not an entirely local processing pipeline. |
 | PHP upload processing | PHP uses its temporary-upload lifecycle; application code validates the bytes and strips metadata. Original uploads are not copied into the application runtime directory. | Request memory and PHP temporary files are involved. Do not promise that the bytes never touch a server or temporary disk. |
 | Provider processing | YouCam receives sanitized person and garment images and creates an asynchronous `cloth-v3` task. | YouCam's service terms and retention apply independently of the browser and app. |
@@ -14,11 +14,13 @@ Development disclosure, 30 October 2026. The [hosted workspace](https://threadro
 | Job and budget metadata | Private ledger contains opaque owner/job identifiers, request hashes, timestamps, task IDs, status and unit reservations. | Records persist after Clear to preserve duplicate prevention and budget accounting. No automatic metadata expiry is implemented. |
 | Explicit downloads | A notes JSON or comparison image is downloaded only on user action. | The user controls the downloaded file. Clearing the app cannot remove it from the device or from places where it was subsequently shared. |
 
-Cost, garment labels and personal notes are decision inputs, not biometric or fit measurements. Notes exports are intended to contain text and numeric metadata, not photos or provider result URLs. Never place sensitive personal details in notes that will be shared or used in a public demo.
+Cost, garment labels and personal notes are decision inputs, not biometric or fit measurements. The observed 749-byte notes export contained no images or URLs. That one result does not replace review of later exports. Never place sensitive personal details in notes that will be shared or used in a public demo.
 
 ## Clear session
 
-The page clears its current photos, notes and result references and requests `DELETE /api/session`. The server marks the session's jobs deleted, removes its local result files, and requests deletion of completed provider tasks where their IDs are known.
+In source, Clear removes the current page's photos, notes and result references and requests `DELETE /api/session`. The server marks the session's jobs deleted, removes its local result files, and requests deletion of completed provider tasks where their IDs are known.
+
+The browser attempt did not visibly finish; browser Clear remains pending confirmation. A request from a fresh foreign session returned 404, which proves that session could not read the result. It does not prove the original session was revoked, its files were removed or the provider erased data.
 
 Running tasks cannot be promised to disappear immediately. They are marked for cleanup; later health/start requests revisit a bounded number of them. This is request-driven cleanup, not a background worker. If no further requests occur, provider retention still applies. An uncertain provider POST without a returned task ID may not be deletable by this app. Failed cleanup must remain visible rather than being represented as confirmed erasure.
 
