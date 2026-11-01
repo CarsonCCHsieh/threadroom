@@ -1,6 +1,6 @@
 # YouCam submission checklist
 
-Evidence update, 30 October 2026. Registration, activity reward access, credentialed preflight and three genuine local tasks are verified. Actual desktop comparison/language/export checks are recorded. Public live activation and one real public two-look action are verified, bringing the total to five tasks. The 140-second English film has a verified [YouTube upload](https://youtu.be/LzYA8Om5eT8) with YouTube Studio publication/public selection confirmed on 30 October 2026; watch-page playback from 0:00 to 0:02 of the displayed 2:20 duration was verified in the existing signed-in Chrome session. Anonymous/full playback remains unverified. Source/HTTP checks, real provider evidence, media review and final submission are separate milestones. **[Formal submission](https://devpost.com/software/threadroom) was confirmed at 08:44:19 UTC on 30 October 2026.**
+Evidence update, 30 October 2026. Registration, activity reward access, credentialed preflight and three genuine local tasks are verified. Actual desktop comparison/language/export checks are recorded. Public live activation and one real public two-look action are verified, bringing the total to five tasks. The 140-second English film has a verified [YouTube upload](https://youtu.be/Snyos1LJcaY) with YouTube Studio publication/public selection confirmed on 30 October 2026; watch-page playback from 0:00 to 0:02 of the displayed 2:20 duration was verified in the existing signed-in Chrome session. Anonymous/full playback remains unverified. Source/HTTP checks, real provider evidence, media review and final submission are separate milestones. **[Formal submission](https://devpost.com/software/threadroom) was confirmed at 08:44:19 UTC on 30 October 2026.**
 
 **Deadline:** 3 November 2026, 00:45 Asia/Taipei. **Free judge access:** through 21 November 2026, 00:45 Asia/Taipei, based on the rules reviewed for the brief. Check the live event page before any further entry edit.
 
@@ -29,7 +29,7 @@ The historical API snapshot at 07:11:01 UTC, after the three local tasks and bef
 - [x] Historical r3 public HTTPS 19/19 and 23 application-file source equality recorded; these checks made no provider calls.
 - [x] Independent post-activation public HTTPS 19/19: configured/liveAvailable true; ten HTML/assets SHA/MIME/size, seven private-path 404s, API 404/no-store and secure cookie flags. Point-in-time check only.
 - [x] Local 140-second English film prepared from actual UI stills and the real comparison export, with genuine YouCam results and burned English captions.
-- [x] Actual YouTube upload and Studio publication/public selection confirmed on 30 October 2026: https://youtu.be/LzYA8Om5eT8.
+- [x] Actual YouTube upload and Studio publication/public selection confirmed on 30 October 2026: https://youtu.be/Snyos1LJcaY.
 - [x] Verify the published watch page displays 2:20 and advances from 0:00 to 0:02 in the existing signed-in Chrome session; paused afterward.
 - [ ] Complete final listening/visual/privacy/link review and check anonymous access/full playback.
 - [ ] Include final docs/assets/setup and identify the actual tested release; do not relabel earlier evidence as proof of later changes.
@@ -49,7 +49,7 @@ The historical API snapshot at 07:11:01 UTC, after the three local tasks and bef
 | Code/CI and historical deployment | Same verification page distinguishes fake-provider tests, HTTP delivery and later local provider execution. |
 | Inputs and licenses | [ASSETS.md](ASSETS.md); cleared synthetic inputs remain distinct from genuine outputs. |
 | Cleanup/privacy | [PRIVACY.md](PRIVACY.md); browser Clear is pending, no provider-erasure guarantee. |
-| Film | [Frozen narration](DEMO_NARRATION.md), [timeline](DEMO_STORYBOARD.md), [captions](DEMO_SUBTITLES.srt); [YouTube upload](https://youtu.be/LzYA8Om5eT8) publication verified; signed-in playback 0:00 to 0:02 verified, anonymous/full playback unverified. |
+| Film | [Frozen narration](DEMO_NARRATION.md), [timeline](DEMO_STORYBOARD.md), [captions](DEMO_SUBTITLES.srt); [YouTube upload](https://youtu.be/Snyos1LJcaY) publication verified; signed-in playback 0:00 to 0:02 verified, anonymous/full playback unverified. |
 | Public live / final submission | Public cleared-sample pair verified; [formal submission confirmed](https://devpost.com/software/threadroom) on 30 October 2026. Continuous judge access remains to be maintained. |
 
 [Official rules](https://youcam-api-skin-ai-ecommerce.devpost.com/rules) and [activity resources](https://youcam-api-skin-ai-ecommerce.devpost.com/resources) take precedence over this preparation checklist.

@@ -1,6 +1,6 @@
 # Frozen demo timeline - 140 seconds
 
-This records the frozen English edit with a verified [YouTube upload](https://youtu.be/LzYA8Om5eT8). YouTube Studio publication/public selection is confirmed on 30 October 2026; the watch page displayed 2:20 and played from 0:00 to 0:02 in the existing signed-in Chrome session before being paused. Anonymous/full playback and complete media review remain unverified. It uses earlier local UI stills, editorial crops/holds and the real comparison PNG, with genuine YouCam outputs. The later public two-look run is separate, not the source of a full public-site recording. It contains no continuous recording, fabricated running state or generated UI frame. Browser Clear execution is not shown or claimed.
+This records the frozen English edit with a verified [YouTube upload](https://youtu.be/Snyos1LJcaY). YouTube Studio publication/public selection is confirmed on 30 October 2026; the watch page displayed 2:20 and played from 0:00 to 0:02 in the existing signed-in Chrome session before being paused. Anonymous/full playback and complete media review remain unverified. It uses earlier local UI stills, editorial crops/holds and the real comparison PNG, with genuine YouCam outputs. The later public two-look run is separate, not the source of a full public-site recording. It contains no continuous recording, fabricated running state or generated UI frame. Browser Clear execution is not shown or claimed.
 
 | Film time | Section | Actual visual material |
 | --- | --- | --- |
