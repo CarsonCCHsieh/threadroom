@@ -22,7 +22,10 @@ final class Api
         }
         if ($method === 'GET' && $path === '/api/health') return ['http' => 200, 'json' => $this->health($owner, $csrf)];
         if ($method === 'POST' && $path === '/api/tryons') return $this->create($owner, $form, $uploads);
-        if ($method === 'DELETE' && $path === '/api/session') return ['http' => 200, 'json' => $this->clear($owner, $csrf)];
+        if ($method === 'DELETE' && $path === '/api/session') {
+            $clear = $this->clear($owner, $csrf);
+            return ['http' => $clear['ok'] ? 200 : 503, 'json' => $clear];
+        }
         if ($method === 'GET' && preg_match('#^/api/tryons/([a-f0-9]{32})(/result)?$#D', $path, $m)) {
             $job = $this->owned($m[1], $owner);
             if (isset($m[2])) {
@@ -40,7 +43,7 @@ final class Api
     {
         $result = ['configured' => $this->config->configured(), 'provider' => 'YouCam', 'liveAvailable' => false,
             'message' => 'Live try-on is not configured yet. You can explore the sample wardrobe.', 'csrf' => $csrf];
-        if (!$result['configured']) return $result;
+        if (!$result['configured']) { $this->reconcileLocalResults(); return $result; }
         try {
             $this->reconcile();
             $cached = $this->store->locked(static fn(array &$s) => $s['preflight'] ?? null);
@@ -231,11 +234,11 @@ final class Api
                     $filename = $this->store->writeImage($image);
                     $job = $this->store->locked(function(array &$s) use ($id, $filename, $pollToken) {
                         if (($s['jobs'][$id]['pollToken'] ?? null) !== $pollToken) {
-                            @unlink($this->store->privateFile($filename));
+                            $this->discardResult($s['jobs'][$id], $filename);
                             return $s['jobs'][$id];
                         }
                         if ($s['jobs'][$id]['deleted']) {
-                            @unlink($this->store->privateFile($filename));
+                            $this->discardResult($s['jobs'][$id], $filename);
                             $s['jobs'][$id]['providerStatus'] = 'success';
                             $s['jobs'][$id]['resultPending'] = false;
                         } else {
@@ -288,7 +291,7 @@ final class Api
 
     private function deleteFinished(array $job): bool
     {
-        if (!isset($job['taskId']) || !in_array($job['providerStatus'], ['success', 'error'], true)) return false;
+        if (!$this->config->configured() || !isset($job['taskId']) || !in_array($job['providerStatus'], ['success', 'error'], true)) return false;
         $allowed = $this->store->locked(static function(array &$s) use ($job) {
             $current = &$s['jobs'][$job['id']];
             if (($current['providerDeleted'] ?? false)) return false;
@@ -303,6 +306,7 @@ final class Api
 
     private function reconcile(): void
     {
+        $this->reconcileLocalResults();
         // A returning client must not be necessary to release a known finished task.
         // Bound network work per request; poll() enforces scheduling and a shared in-flight lease.
         $jobs = $this->store->locked(static function(array &$s) {
@@ -319,29 +323,73 @@ final class Api
         foreach ($finished as $job) $this->deleteFinished($job);
     }
 
+    private function discardResult(array &$job, string $filename): void
+    {
+        if (!$this->store->removeImage($filename)) {
+            $job['cleanupFiles'] = array_values(array_unique(array_merge($job['cleanupFiles'] ?? [], [$filename])));
+        }
+    }
+
+    private function cleanLocalResults(array &$job): void
+    {
+        if ($job['deleted'] && isset($job['resultFile']) && $this->store->removeImage($job['resultFile'])) unset($job['resultFile']);
+        if (isset($job['cleanupFiles'])) {
+            $job['cleanupFiles'] = array_values(array_filter($job['cleanupFiles'], fn(string $name) => !$this->store->removeImage($name)));
+            if (!$job['cleanupFiles']) unset($job['cleanupFiles']);
+        }
+        if (($job['deleted'] && isset($job['resultFile'])) || !empty($job['cleanupFiles'])) $job['nextLocalCleanupAt'] = time() + 10;
+        else unset($job['nextLocalCleanupAt']);
+    }
+
+    private function reconcileLocalResults(): void
+    {
+        // Local retries also work without a provider key. Bound work per request;
+        // never remove a published result from a session that has not cleared it.
+        $this->store->locked(function(array &$s) {
+            $count = 0;
+            foreach ($s['jobs'] as &$job) {
+                if (empty($job['cleanupFiles']) && !($job['deleted'] && isset($job['resultFile']))) continue;
+                if (($job['nextLocalCleanupAt'] ?? 0) > time()) continue;
+                $this->cleanLocalResults($job);
+                if (++$count >= 2) break;
+            }
+            unset($job);
+        });
+    }
+
     private function clear(string $owner, string $csrf): array
     {
         $jobs = $this->store->locked(function(array &$s) use ($owner) {
             $jobs = [];
             foreach ($s['jobs'] as $id => &$job) if ($job['owner'] === $owner) {
-                if (isset($job['resultFile'])) @unlink($this->store->privateFile($job['resultFile']));
-                unset($job['resultFile']); $job['deleted'] = true; $job['resultPending'] = false; $jobs[] = $job;
+                $job['deleted'] = true; $job['resultPending'] = false;
+                $this->cleanLocalResults($job); $jobs[] = $job;
             }
             unset($job);
             return $jobs;
         });
-        $pending = 0; $manual = 0;
         foreach ($jobs as $job) {
             if (($job['providerDeleted'] ?? false)) continue;
-            if (!isset($job['taskId'])) {
-                if (in_array($job['providerStatus'], ['creating', 'unknown'], true)) { $pending++; $manual++; }
-                continue;
-            }
-            if (!$this->deleteFinished($job)) $pending++;
+            $this->deleteFinished($job);
         }
-        return ['ok' => true, 'csrf' => $csrf, 'providerCleanupPending' => $pending, 'providerCleanupManual' => $manual,
-            'message' => $manual ? 'Private local results were cleared. Unconfirmed provider tasks require operator reconciliation; automatic deletion is unavailable without a task ID. Provider retention may still apply.'
+        // Read durable state after I/O; a skipped lease is not a deletion result.
+        [$local, $pending, $manual] = $this->store->locked(static function(array &$s) use ($jobs) {
+            $local = 0; $pending = 0; $manual = 0;
+            foreach ($jobs as $old) {
+                $job = $s['jobs'][$old['id']];
+                $files = array_merge($job['cleanupFiles'] ?? [], isset($job['resultFile']) ? [$job['resultFile']] : []);
+                $local += count(array_unique($files));
+                if ($job['providerDeleted'] ?? false) continue;
+                if (isset($job['taskId'])) $pending++;
+                elseif (in_array($job['providerStatus'], ['creating', 'unknown'], true)) { $pending++; $manual++; }
+            }
+            return [$local, $pending, $manual];
+        });
+        return ['ok' => $local === 0, 'csrf' => $csrf, 'localCleanupPending' => $local,
+            'providerCleanupPending' => $pending, 'providerCleanupManual' => $manual,
+            'message' => $local ? 'Result access was revoked, but private local file deletion is unconfirmed. Retry Clear session; provider cleanup and retention are separate.'
+                : ($manual ? 'Private local results were cleared. Unconfirmed provider tasks require operator reconciliation; automatic deletion is unavailable without a task ID. Provider retention may still apply.'
                 : ($pending ? 'Private local results were cleared. Provider cleanup is pending; later health or try-on requests can check known tasks and retry deletion. Provider retention may still apply.'
-                    : 'Private results were cleared.')];
+                    : 'Private results were cleared.'))];
     }
 }

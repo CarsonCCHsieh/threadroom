@@ -183,4 +183,13 @@ final class Store
         @chmod($path, 0600);
         return $name;
     }
+    public function removeImage(string $name): bool
+    {
+        $path = $this->privateFile($name);
+        if (@unlink($path)) return true;
+        // A failed stat may mean denied access, not absence. Only a readable
+        // parent listing can establish that an already-absent file is gone.
+        $entries = @scandir($this->dir);
+        return is_array($entries) && !in_array($name, $entries, true);
+    }
 }

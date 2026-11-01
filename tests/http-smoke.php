@@ -13,7 +13,7 @@ $address = stream_socket_get_name($socket, false); $port = (int)substr(strrchr($
 $env = array_merge(getenv(), ['YOUCAM_API_KEY' => '', 'YOUCAM_LIVE_ENABLED' => 'false',
     'THREADROOM_SECURE_COOKIE' => 'false', 'THREADROOM_RUNTIME_DIR' => $root . '/var/private']);
 $pipes = [];
-$process = proc_open([PHP_BINARY, '-d', 'upload_max_filesize=10M', '-d', 'post_max_size=21M', '-S', '127.0.0.1:' . $port,
+$process = proc_open([PHP_BINARY, '-d', 'upload_max_filesize=10M', '-d', 'post_max_size=21M', '-d', 'session.serialize_handler=php', '-S', '127.0.0.1:' . $port,
     '-t', $root . '/public', $root . '/router.php'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $root, $env);
 if (!is_resource($process)) throw new RuntimeException('Local test server did not start.');
 fclose($pipes[0]);
@@ -41,6 +41,28 @@ try {
     $headers = [$cookie, 'X-CSRF-Token: ' . $json['csrf']];
     assertHttp(requestHttp('DELETE', '/api/session', array_merge($headers, ['Origin: https://evil.example']))['status'] === 403, 'Foreign Origin rejected');
     assertHttp(requestHttp('DELETE', '/api/session', $headers)['status'] === 200, 'Owned session can be cleared');
+    // Seed only this isolated no-key server with a synthetic result owned by its
+    // actual session. Never load application configuration or production state.
+    require_once $source . '/server/bootstrap.php';
+    preg_match('/threadroom_session=([a-zA-Z0-9,-]+)/', $setCookie, $sessionMatch);
+    $sessionData = file_get_contents($root . '/var/private/sessions/sess_' . $sessionMatch[1]);
+    assertHttp(preg_match('/owner\|s:64:"([a-f0-9]{64})";/', $sessionData, $ownerMatch) === 1, 'Isolated owner fixture available');
+    $store = new \Threadroom\Store($root . '/var/private'); $jobId = str_repeat('a', 32); $filename = $jobId . '.jpg';
+    $blockedPath = $store->privateFile($filename); mkdir($blockedPath); file_put_contents($blockedPath . '/fixture', 'synthetic obstacle');
+    $store->locked(static function(array &$s) use ($ownerMatch, $jobId, $filename) {
+        $s['jobs'][$jobId] = ['id' => $jobId, 'owner' => $ownerMatch[1], 'deleted' => false, 'resultPending' => false,
+            'status' => 'success', 'providerStatus' => 'not_started', 'resultFile' => $filename];
+    });
+    $failedClear = requestHttp('DELETE', '/api/session', $headers);
+    $failedJson = json_decode($failedClear['body'], true, 16, JSON_THROW_ON_ERROR);
+    assertHttp($failedClear['status'] === 503 && !$failedJson['ok'] && $failedJson['localCleanupPending'] === 1
+        && $failedJson['providerCleanupPending'] === 0, 'HTTP Clear distinguishes failed local deletion from provider cleanup');
+    assertHttp(requestHttp('GET', '/api/tryons/' . $jobId . '/result', [$cookie])['status'] === 404, 'Failed deletion still revokes result access');
+    unlink($blockedPath . '/fixture'); rmdir($blockedPath); file_put_contents($blockedPath, file_get_contents(__DIR__ . '/fixtures/result.jpg'));
+    $retriedClear = requestHttp('DELETE', '/api/session', $headers);
+    $retriedJson = json_decode($retriedClear['body'], true, 16, JSON_THROW_ON_ERROR);
+    assertHttp($retriedClear['status'] === 200 && $retriedJson['ok'] && $retriedJson['localCleanupPending'] === 0 && !file_exists($blockedPath),
+        'Same session and CSRF can retry Clear after HTTP 503 without generating');
     $boundary = 'threadroom-' . bin2hex(random_bytes(8)); $body = '';
     foreach (['consent' => 'true', 'category' => 'upper_body', 'idempotency_key' => '12345678-1234-4123-8123-123456789012'] as $name => $value) {
         $body .= '--' . $boundary . "\r\nContent-Disposition: form-data; name=\"" . $name . "\"\r\n\r\n" . $value . "\r\n";
@@ -51,7 +73,7 @@ try {
     $upload = requestHttp('POST', '/api/tryons', array_merge($headers, ['Content-Type: multipart/form-data; boundary=' . $boundary]), $body);
     assertHttp($upload['status'] === 503 && json_decode($upload['body'], true)['error'] === 'live_unavailable', 'Real multipart upload validates but no-key never starts provider');
     assertHttp(!str_contains((string)requestHttp('GET', '/server/Support.php')['body'], '<?php'), 'Private source is never served');
-    echo 'PASS isolated HTTP session, CSRF, Origin, multipart and no-key smoke; zero provider calls.' . PHP_EOL;
+    echo 'PASS isolated HTTP session, CSRF, Origin, Clear failure/retry, multipart and no-key smoke; zero provider calls.' . PHP_EOL;
 } finally {
     proc_terminate($process); fclose($pipes[1]); fclose($pipes[2]); proc_close($process);
     $real = realpath($root);

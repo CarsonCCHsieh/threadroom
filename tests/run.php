@@ -21,6 +21,7 @@ final class MockTransport implements Transport
     public ?array $createResponse = null;
     public array $pollResponses = [];
     public array $resultResponses = [];
+    public array $deleteResponses = [];
     public int $resultGets = 0;
     public ?\Closure $duringResult = null;
     public string $resultUrl = 'https://yce-us.s3-accelerate.amazonaws.com/result.jpg?signature=TEST';
@@ -78,7 +79,15 @@ final class MockTransport implements Transport
             return $this->json(['status' => 200, 'data' => ['task_status' => $this->taskStatus,
                 'results' => ['url' => $this->resultUrl]]]);
         }
-        if ($method === 'POST' && $path === '/s2s/v2.0/task/delete') { $this->deletes++; return $this->json(['status' => 200]); }
+        if ($method === 'POST' && $path === '/s2s/v2.0/task/delete') {
+            $this->deletes++;
+            if ($this->deleteResponses) {
+                $response = array_shift($this->deleteResponses);
+                if ($response instanceof ApiError) throw $response;
+                return $response;
+            }
+            return $this->json(['status' => 200]);
+        }
         throw new \RuntimeException('Unexpected mock endpoint. No network calls are possible.');
     }
     private function json(array $data): array { return ['status' => 200, 'body' => json_encode($data, JSON_THROW_ON_ERROR)]; }
@@ -349,6 +358,87 @@ try {
         $clear = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf']);
         check($clear['json']['ok'] && $http->deletes === 1 && !is_file($file['file']), 'Local and completed provider task deleted');
         expect('not_found', fn() => $api->dispatch('GET', $path, 'owner-a', 'csrf'));
+    });
+    test('Clear retains failed local deletions, revokes access and retries without generating', function() {
+        [$api, $http, $store] = setupApi(); $id = create($api)['json']['id']; ready($store, $id);
+        $api->dispatch('GET', '/api/tryons/' . $id, 'owner-a', 'csrf');
+        $job = $store->locked(static fn(array &$s) => $s['jobs'][$id]);
+        $file = $store->privateFile($job['resultFile']);
+        // A directory at the exact private filename makes the real unlink fail on
+        // Windows and Unix, without changing production storage or permissions.
+        unlink($file); mkdir($file); file_put_contents($file . '/fixture', 'synthetic deletion obstacle');
+        $clear = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf']);
+        check($clear['http'] === 503 && !$clear['json']['ok'] && $clear['json']['localCleanupPending'] === 1,
+            'A local unlink failure must not report a successful Clear');
+        $after = $store->locked(static fn(array &$s) => $s['jobs'][$id]);
+        check($after['deleted'] && $after['resultFile'] === $job['resultFile'] && is_dir($file), 'Keep the retry reference while revoking the result');
+        expect('not_found', fn() => $api->dispatch('GET', '/api/tryons/' . $id . '/result', 'owner-a', 'csrf'));
+        check($clear['json']['providerCleanupPending'] === 0 && $http->deletes === 1, 'Local failure and provider acknowledgement are independent');
+        unlink($file . '/fixture'); rmdir($file); file_put_contents($file, fixtureJpeg());
+        $retry = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf']);
+        $after = $store->locked(static fn(array &$s) => $s['jobs'][$id]);
+        check($retry['http'] === 200 && $retry['json']['ok'] && $retry['json']['localCleanupPending'] === 0
+            && !isset($after['resultFile']) && !file_exists($file), 'Retry removes the file before dropping its reference');
+        check($http->creates === 1 && $http->deletes === 1 && $store->locked(static fn(array &$s) => $s['unitReservedTotal']) == 2,
+            'Retry does not generate, repeat an acknowledged provider deletion or reset accounting');
+    });
+    test('Local reconciliation is bounded, works without a key and preserves active results', function() {
+        [$api, $http, $store] = setupApi(['YOUCAM_API_KEY' => '']); $files = [];
+        $store->locked(function(array &$s) use ($store, &$files) {
+            for ($i = 0; $i < 4; $i++) {
+                $id = str_pad((string)$i, 32, '0', STR_PAD_LEFT);
+                $name = $store->writeImage(['mime' => 'image/jpeg', 'bytes' => fixtureJpeg()]); $files[] = $store->privateFile($name);
+                $s['jobs'][$id] = ['id' => $id, 'owner' => 'owner-a', 'deleted' => $i < 3, 'resultFile' => $name];
+            }
+            $orphan = $store->writeImage(['mime' => 'image/jpeg', 'bytes' => fixtureJpeg()]); $files[] = $store->privateFile($orphan);
+            $s['jobs'][$id]['cleanupFiles'] = [$orphan];
+        });
+        $api->dispatch('GET', '/api/health', 'owner-a', 'csrf');
+        check(!file_exists($files[0]) && !file_exists($files[1]) && is_file($files[2]) && is_file($files[3]), 'One health request retries at most two local jobs');
+        $api->dispatch('GET', '/api/health', 'owner-a', 'csrf');
+        check(!file_exists($files[2]) && is_file($files[3]) && !file_exists($files[4]) && count($http->calls) === 0,
+            'Later no-key health drains cleared and discarded files without deleting active published results or contacting provider');
+
+        [$api, $http, $store] = setupApi(['YOUCAM_API_KEY' => '']);
+        $name = str_repeat('a', 32) . '.jpg'; $file = $store->privateFile($name); mkdir($file);
+        $store->locked(static function(array &$s) use ($name) {
+            $s['jobs']['blocked'] = ['deleted' => true, 'resultFile' => $name];
+        });
+        $api->dispatch('GET', '/api/health', 'owner-a', 'csrf');
+        $retryAt = $store->locked(static fn(array &$s) => $s['jobs']['blocked']['nextLocalCleanupAt']);
+        check($retryAt >= time() + 9, 'Failed local retries are deferred instead of monopolizing every health request');
+        rmdir($file); file_put_contents($file, fixtureJpeg());
+        $api->dispatch('GET', '/api/health', 'owner-a', 'csrf');
+        check(is_file($file), 'Health respects the local retry backoff');
+        $store->locked(static function(array &$s) { $s['jobs']['blocked']['nextLocalCleanupAt'] = 0; });
+        $api->dispatch('GET', '/api/health', 'owner-a', 'csrf');
+        check(!file_exists($file) && !isset($store->locked(static fn(array &$s) => $s['jobs']['blocked'])['resultFile']), 'Due retry removes the retained local file');
+    });
+    test('Provider cleanup rejects ambiguous responses, preserves pending state and retries only when due', function() {
+        foreach ([new ApiError(503, 'provider_connection', 'Unconfirmed deletion.'), ['status' => 503, 'body' => 'temporary error'],
+            ['status' => 200, 'body' => 'not json'], ['status' => 200, 'body' => '{"status":500}']] as $response) {
+            [$api, $http, $store] = setupApi(); $id = create($api)['json']['id']; ready($store, $id);
+            $api->dispatch('GET', '/api/tryons/' . $id, 'owner-a', 'csrf'); $http->deleteResponses[] = $response;
+            $clear = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf'])['json'];
+            $job = $store->locked(static fn(array &$s) => $s['jobs'][$id]);
+            check($clear['providerCleanupPending'] === 1 && !($job['providerDeleted'] ?? false) && isset($job['taskId']), 'Unconfirmed provider deletion stays pending');
+            $again = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf'])['json'];
+            check($again['providerCleanupPending'] === 1 && $http->deletes === 1, 'Immediate retry respects the delete backoff');
+            $store->locked(static function(array &$s) use ($id) { $s['jobs'][$id]['nextDeleteAt'] = 0; });
+            $retry = $api->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf'])['json'];
+            check($retry['providerCleanupPending'] === 0 && $http->deletes === 2 && $http->creates === 1, 'Only acknowledged retry clears provider pending state');
+        }
+    });
+    test('Clear without a provider key removes local results while retaining provider cleanup', function() {
+        [$api, $http, $store, $config] = setupApi(); $id = create($api)['json']['id']; ready($store, $id);
+        $api->dispatch('GET', '/api/tryons/' . $id, 'owner-a', 'csrf');
+        $unconfigured = new Config(['YOUCAM_API_KEY' => '', 'THREADROOM_RUNTIME_DIR' => $config->get('runtime')]);
+        $offline = new Api($unconfigured, $http); $calls = count($http->calls);
+        $clear = $offline->dispatch('DELETE', '/api/session', 'owner-a', 'csrf', ['x-csrf-token' => 'csrf'])['json'];
+        check($clear['ok'] && $clear['providerCleanupPending'] === 1 && count($http->calls) === $calls,
+            'Missing credentials must not trigger an unauthenticated provider deletion or claim its success');
+        $job = $store->locked(static fn(array &$s) => $s['jobs'][$id]);
+        check(!isset($job['resultFile']) && !($job['providerDeleted'] ?? false), 'Local removal does not erase the provider retry reference');
     });
     test('Malicious provider result URL is rejected before storage fetch; no mock success', function() {
         [$api, $http, $store] = setupApi(); $http->resultUrl = 'https://169.254.169.254/latest/meta-data';

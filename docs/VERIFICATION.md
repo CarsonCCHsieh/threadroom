@@ -1,5 +1,15 @@
 # Verification record
 
+## Local cleanup correction — 1 November 2026
+
+This correction is local source only; no deployment, real-provider deletion, public-session Clear, new generation, commit or push was performed. The historical public Clear gap below remains open.
+
+- Reproduced a real local `unlink` failure using a nonempty directory at the expected private result filename in isolated temporary storage. Before the fix, Clear incorrectly returned success and discarded the filename. The regression failed against the old implementation before the fix was applied.
+- Corrected source revokes result access immediately but preserves failed local deletion references, reports HTTP 503 / `localCleanupPending`, and allows an ordinary same-session retry. Success or confirmed absence is required before removing the reference. Failed discarded-worker files retain retry references too; bounded local reconciliation preserves active published results and observes a ten-second failure backoff.
+- The full local fake-provider suite passed **25/25 cases**. New coverage includes failed unlink and successful retry with unchanged accounting; bounded no-key local reconciliation; active-result preservation; provider transport/HTTP/JSON rejection and deferred retry; and Clear with an absent provider key. These are synthetic/mock tests, not provider-erasure evidence. Existing published CI remains the older 21-case baseline.
+- `php tests/http-smoke.php` passed against an isolated loopback no-key server: actual HTTP 503 on local deletion failure, original result access denied, and HTTP 200 on a successful same-session/same-CSRF retry. It used only synthetic fixtures and made zero provider requests. Frontend source inspection confirms non-2xx responses reach the existing translated retry notice; no new Chrome interaction or browser visual verification is asserted.
+- PHP syntax and `git diff --check` passed for the correction. The operator must still deploy a reviewed release and verify its actual Clear response, local leftover state and separately recorded provider cleanup before marking public deletion complete.
+
 Evidence boundary: updated on 30 October 2026. The earlier deployment/source/CI baseline, three genuine local tasks and later public activation/two-task browser run are distinct evidence. The public sample path is live-enabled. Five real tasks have completed in total. This documentation update is not part of the linked application-source commit; final release reconciliation, full media review, Clear and real mobile hardware/comprehensive accessibility remain pending. Formal Devpost submission is confirmed separately below.
 
 | Milestone | Status | Evidence / remaining work |
